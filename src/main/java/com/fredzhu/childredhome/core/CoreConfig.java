@@ -1,5 +1,4 @@
 /**
- * jiangjia.la Inc.
  * Copyright (c) 2012 All Rights Reserved.
  */
 package com.fredzhu.childredhome.core;
