@@ -15,7 +15,7 @@
 	</properties>
 
 	<dependencies>
-	
+
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
@@ -39,6 +39,63 @@
 		</dependency>
 
 	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>*/*</include>
+					<include>*</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>8.0.0.M2</version>
+				<configuration>
+					<webApp>${basedir}/target/${project.build.finalName}.war</webApp>
+					<scanIntervalSeconds>0</scanIntervalSeconds>
+					<connectors>
+						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+							<port>8080</port>
+							<maxIdleTime>0</maxIdleTime>
+						</connector>
+					</connectors>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.mybatis.generator</groupId>
+				<artifactId>mybatis-generator-maven-plugin</artifactId>
+				<version>1.3.0</version>
+			</plugin>
+		</plugins>
+		<finalName>ROOT</finalName>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>test</id>
+			<properties>
+				<prop.jdbc.children.wrt.driver>com.mysql.jdbc.Driver</prop.jdbc.children.wrt.driver>
+				<prop.jdbc.children.wrt.url>jdbc:mysql://127.0.0.1/db_childrenhome?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull</prop.jdbc.children.wrt.url>
+				<prop.jdbc.children.wrt.username>root</prop.jdbc.children.wrt.username>
+				<prop.jdbc.children.wrt.password>root</prop.jdbc.children.wrt.password>
+			</properties>
+		</profile>
+		<profile>
+			<id>prd</id>
+			<properties>
+				<prop.jdbc.children.wrt.driver>com.mysql.jdbc.Driver</prop.jdbc.children.wrt.driver>
+				<prop.jdbc.children.wrt.url>jdbc:mysql://127.0.0.1/db_childrenhome?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull</prop.jdbc.children.wrt.url>
+				<prop.jdbc.children.wrt.username>root</prop.jdbc.children.wrt.username>
+				<prop.jdbc.children.wrt.password>root</prop.jdbc.children.wrt.password>
+			</properties>
+		</profile>
+	</profiles>
 
 	<repositories>
 		<repository>
