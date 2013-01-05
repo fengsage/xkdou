@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 
 import com.fredzhu.childredhome.entity.Children;
@@ -36,6 +37,8 @@ import com.jfinal.plugin.activerecord.Model;
  *
  */
 public class ChildrenModel extends Model<ChildrenModel> {
+
+    private static final Logger        LOG              = Logger.getLogger(ChildrenModel.class);
 
     /**
      *Comment for <code>serialVersionUID</code>
@@ -84,24 +87,48 @@ public class ChildrenModel extends Model<ChildrenModel> {
 
         //暂时不考虑更新
         if (record == null) {
-            record = new ChildrenModel();
-            record.set("pic", children.getPic());
-            record.set("birthday", children.getBirthday());
-            record.set("height", children.getHeight());
-            record.set("info_from", children.getInfoFrom().getCode());
-            record.set("info_from_no", children.getInfoFromNo());
-            record.set("info_from_url", children.getInfoFromUrl());
-            record.set("lost_addr", children.getLostAddr());
-            record.set("lost_time", children.getLostTime());
-            record.set("realname", children.getRealname());
-            record.set("remark", children.getRemark());
-            record.set("sex", children.getSex());
-            record.set("tezheng", children.getTezheng());
-            record.set("weight", children.getWeight());
-            record.set("create_time", new Date());
-            record.save();
+            convertToRecord(children).save();
+        } else {//更新
+            convertToRecord(children).set("id", record.getLong("id")).update();
         }
-
         return children;
+    }
+
+    /**
+     * 同步更新数据
+     */
+    public static void synUpdate() {
+        LOG.info("更新内部数据");
+        long _st = System.currentTimeMillis();
+        List<ChildrenModel> records = dao.find("select * from child_info");
+        for (ChildrenModel record : records) {
+            try {
+                parseAndSaveURL(record.getStr("info_from_url"));
+            } catch (Exception e) {
+                LOG.error("", e);
+            }
+        }
+        LOG.info("更新内部数据完成,耗时:" + (System.currentTimeMillis() - _st));
+    }
+
+    //-------------------------------内部方法---------------------------
+
+    private static ChildrenModel convertToRecord(Children children) {
+        ChildrenModel record = new ChildrenModel();
+        record.set("pic", children.getPic());
+        record.set("birthday", children.getBirthday());
+        record.set("height", children.getHeight());
+        record.set("info_from", children.getInfoFrom().getCode());
+        record.set("info_from_no", children.getInfoFromNo());
+        record.set("info_from_url", children.getInfoFromUrl());
+        record.set("lost_addr", children.getLostAddr());
+        record.set("lost_time", children.getLostTime());
+        record.set("realname", children.getRealname());
+        record.set("remark", children.getRemark());
+        record.set("sex", children.getSex());
+        record.set("tezheng", children.getTezheng());
+        record.set("weight", children.getWeight());
+        record.set("create_time", new Date());
+        return record;
     }
 }
