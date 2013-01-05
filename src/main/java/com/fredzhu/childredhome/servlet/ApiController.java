@@ -89,7 +89,6 @@ public class ApiController extends Controller {
 
     public void synUpdate() {
         ChildrenModel.synUpdate();
-        renderText("ok");
     }
 
 }
