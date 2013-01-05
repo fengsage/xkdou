@@ -15,6 +15,13 @@
 	</properties>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.7</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
@@ -32,6 +39,13 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.19</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.mchange</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.2-pre8</version>
+		</dependency>
+
 		<dependency>
 			<groupId>tomcat</groupId>
 			<artifactId>servlet-api</artifactId>
@@ -42,7 +56,16 @@
 			<artifactId>jfinal</artifactId>
 			<version>1.1.6</version>
 		</dependency>
-
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>3.0.6.RELEASE</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -89,6 +112,16 @@
 				<prop.jdbc.children.wrt.url>jdbc:mysql://127.0.0.1/db_childrenhome?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull</prop.jdbc.children.wrt.url>
 				<prop.jdbc.children.wrt.username>root</prop.jdbc.children.wrt.username>
 				<prop.jdbc.children.wrt.password>root</prop.jdbc.children.wrt.password>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>kuci</id>
+			<properties>
+				<prop.jdbc.children.wrt.driver>com.mysql.jdbc.Driver</prop.jdbc.children.wrt.driver>
+				<prop.jdbc.children.wrt.url>jdbc:mysql://127.0.0.1/db_childrenhome?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull</prop.jdbc.children.wrt.url>
+				<prop.jdbc.children.wrt.username>root</prop.jdbc.children.wrt.username>
+				<prop.jdbc.children.wrt.password></prop.jdbc.children.wrt.password>
 			</properties>
 		</profile>
 		<profile>
