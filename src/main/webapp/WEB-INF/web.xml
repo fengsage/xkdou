@@ -30,17 +30,6 @@
 	</filter-mapping>
 
 
-
-	<error-page>
-		<exception-type>java.lang.Exception</exception-type>
-		<location>/error.html</location>
-	</error-page>
-
-	<error-page>
-		<error-code>404</error-code>
-		<location>/error.html</location>
-	</error-page>
-
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>

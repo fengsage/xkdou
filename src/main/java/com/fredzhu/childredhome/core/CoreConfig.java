@@ -49,6 +49,7 @@ public class CoreConfig extends JFinalConfig {
     public void configConstant(Constants me) {
         me.setDevMode(true);
         me.setViewType(ViewType.VELOCITY);
+        me.setError404View(TEMPATE_PATH + "/404.html");
     }
 
     /**
@@ -92,7 +93,6 @@ public class CoreConfig extends JFinalConfig {
      */
     @Override
     public void configHandler(Handlers me) {
-
     }
 
 }
