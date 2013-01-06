@@ -1,8 +1,8 @@
-drop database db_childrenhome;
+drop database db_lostchild;
 
-create database db_childrenhome;
-use db_childrenhome;
--- 系统表
+create database db_lostchild;
+
+use db_lostchild;
 
 CREATE TABLE IF NOT EXISTS `child_info` (
   `id` INT unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
