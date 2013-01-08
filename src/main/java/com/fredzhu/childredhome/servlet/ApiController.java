@@ -38,7 +38,7 @@ public class ApiController extends Controller {
 	
 	private static final Logger	LOG		= Logger.getLogger(ApiController.class);
 	
-	private static final Gson	gson	= new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+	private static final Gson	gson	= new GsonBuilder().setDateFormat("yyyy年MM月dd日").create();
 	
 	public void random() {
 		Integer size = getPara("size") != null ? getParaToInt("size") : 1;
