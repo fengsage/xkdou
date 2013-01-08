@@ -4,7 +4,6 @@
  */
 package com.fredzhu.childredhome.parse;
 
-
 /**
  *                       
  * @Filename: Parse.java
@@ -27,6 +26,6 @@ package com.fredzhu.childredhome.parse;
  */
 public interface Parse {
 	
-	public ParseResult parse(String url);
+	public ParseResult parse();
 	
 }

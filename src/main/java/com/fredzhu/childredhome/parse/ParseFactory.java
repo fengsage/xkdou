@@ -4,7 +4,6 @@
  */
 package com.fredzhu.childredhome.parse;
 
-import com.fredzhu.childredhome.entity.Children;
 import com.fredzhu.childredhome.entity.InfoFromEnum;
 
 /**
@@ -41,11 +40,11 @@ public class ParseFactory {
 		return _instance;
 	}
 	
-	public Children getChildrenInfo(String url) {
+	public AbstractChildInfoParse getChildInfoParse(String url) {
 		InfoFromEnum infoFrom = checkUrlSite(url);
 		switch (infoFrom) {
 			case BAOBEIHUIJIA:
-				return new BaobeihuijiaParse().parse(url);
+				return new BaobeihuijiaParse(url);
 		}
 		throw new RuntimeException("can't parse url,url=" + url);
 	}

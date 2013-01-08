@@ -4,6 +4,8 @@
  */
 package com.fredzhu.childredhome.parse;
 
+import java.util.List;
+
 import com.fredzhu.childredhome.entity.Children;
 
 /**
@@ -28,6 +30,8 @@ import com.fredzhu.childredhome.entity.Children;
  */
 public abstract class AbstractChildInfoParse implements Parse {
 	
-	public abstract Children parse(String url);
+	public abstract Children parse();
+	
+	public abstract List<String> parseChildrens();
 	
 }
