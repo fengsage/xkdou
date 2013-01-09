@@ -5,7 +5,6 @@ package com.fredzhu.childredhome.servlet;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 
 import com.fredzhu.childredhome.entity.Children;
@@ -35,20 +34,21 @@ import com.jfinal.core.Controller;
  *
  */
 public class ApiController extends Controller {
-
-    private static final Logger LOG  = Logger.getLogger(ApiController.class);
-
-    private static final Gson   gson = new GsonBuilder().setDateFormat("yyyy年MM月dd日").create();
-
-    public void random() {
-        Integer size = getPara("size") != null ? getParaToInt("size") : 1;
-        List<Children> list = ChildrenModel.randmon(size <= 10 ? size : 10);
-        String jsoncallback = getPara("jsoncallback");
-        if (StringUtils.hasText(jsoncallback)) {
-            renderText(String.format("%s(%s)", jsoncallback, gson.toJson(list)));
-        } else {
-            renderText(gson.toJson(list));
-        }
-    }
-
+	
+	private static final Gson	gson	= new GsonBuilder().setDateFormat("yyyy年MM月dd日").create();
+	
+	public void random() {
+		Integer size = getPara("size") != null ? getParaToInt("size") : 1;
+		List<Children> list = ChildrenModel.randmon(size <= 10 ? size : 10);
+		String jsoncallback = getPara("jsoncallback");
+		if (StringUtils.hasText(jsoncallback)) {
+			renderText(String.format("%s(%s)", jsoncallback, gson.toJson(list)));
+		} else {
+			renderText(gson.toJson(list));
+		}
+	}
+	
+	public void count() {
+		renderText(String.valueOf(ChildrenModel.getChildCount()));
+	}
 }

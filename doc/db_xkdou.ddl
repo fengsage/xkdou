@@ -1,8 +1,8 @@
-drop database db_lostchild;
+drop database db_xkdou;
 
-create database db_lostchild;
+create database db_xkdou;
 
-use db_lostchild;
+use db_xkdou;
 
 CREATE TABLE IF NOT EXISTS `child_info` (
   `id` INT unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
