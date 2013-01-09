@@ -5,6 +5,7 @@ package com.fredzhu.childredhome.core;
 
 import com.fredzhu.childredhome.model.ChildrenModel;
 import com.fredzhu.childredhome.servlet.ApiController;
+import com.fredzhu.childredhome.servlet.ToolsController;
 import com.fredzhu.childredhome.util.PropertiesHelp;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
@@ -59,6 +60,7 @@ public class CoreConfig extends JFinalConfig {
     @Override
     public void configRoute(Routes me) {
         me.add("/api", ApiController.class, TEMPATE_PATH + "/api");
+        me.add("/tools", ToolsController.class, TEMPATE_PATH + "/tools");
     }
 
     /**
