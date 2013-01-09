@@ -35,83 +35,87 @@ import com.jfinal.core.Controller;
  *
  */
 public class ApiController extends Controller {
-	
-	private static final Logger	LOG		= Logger.getLogger(ApiController.class);
-	
-	private static final Gson	gson	= new GsonBuilder().setDateFormat("yyyy年MM月dd日").create();
-	
-	public void random() {
-		Integer size = getPara("size") != null ? getParaToInt("size") : 1;
-		List<Children> list = ChildrenModel.randmon(size <= 10 ? size : 10);
-		String jsoncallback = getPara("jsoncallback");
-		if (StringUtils.hasText(jsoncallback)) {
-			renderText(String.format("%s(%s)", jsoncallback, gson.toJson(list)));
-		} else {
-			renderText(gson.toJson(list));
-		}
-	}
-	
-	public void parseUrl() {
-		try {
-			String url = getPara("url");
-			try {
-				ChildrenModel.parseChildren(url);
-			} catch (Exception e) {
-				LOG.error("", e);
-			}
-			renderText("ok");
-		} catch (Exception e) {
-			renderText(e.getMessage());
-		}
-	}
-	
-	public void batchParseUrl() {
-		if ("GET".equals(getRequest().getMethod())) {
-			renderVelocity("batchParseUrl.html");
-		} else {
-			String urls = getPara("urls");
-			if (StringUtils.hasText(urls)) {
-				for (String url : urls.split("\\n")) {
-					try {
-						ChildrenModel.parseChildren(url);
-					} catch (Exception e) {
-						LOG.error("", e);
-					}
-				}
-			}
-			renderText("ok");
-		}
-	}
-	
-	public void parseListUrl() {
-		try {
-			String url = getPara("url");
-			try {
-				ChildrenModel.parseChildrenList(url);
-			} catch (Exception e) {
-				LOG.error("", e);
-			}
-			renderText("ok");
-		} catch (Exception e) {
-			renderText(e.getMessage());
-		}
-	}
-	
-	public void batchParseListUrl() {
-		if ("GET".equals(getRequest().getMethod())) {
-			renderVelocity("batchParseListUrl.html");
-		} else {
-			String urls = getPara("urls");
-			if (StringUtils.hasText(urls)) {
-				for (String url : urls.split("\\n")) {
-					try {
-						ChildrenModel.parseChildrenList(url);
-					} catch (Exception e) {
-						LOG.error("", e);
-					}
-				}
-			}
-			renderText("ok");
-		}
-	}
+
+    private static final Logger LOG  = Logger.getLogger(ApiController.class);
+
+    private static final Gson   gson = new GsonBuilder().setDateFormat("yyyy年MM月dd日").create();
+
+    public void random() {
+        Integer size = getPara("size") != null ? getParaToInt("size") : 1;
+        List<Children> list = ChildrenModel.randmon(size <= 10 ? size : 10);
+        String jsoncallback = getPara("jsoncallback");
+        if (StringUtils.hasText(jsoncallback)) {
+            renderText(String.format("%s(%s)", jsoncallback, gson.toJson(list)));
+        } else {
+            renderText(gson.toJson(list));
+        }
+    }
+
+    public void parseUrl() {
+        try {
+            String url = getPara("url");
+            try {
+                ChildrenModel.parseChildren(url);
+            } catch (Exception e) {
+                LOG.error("", e);
+            }
+            renderText("ok");
+        } catch (Exception e) {
+            renderText(e.getMessage());
+        }
+    }
+
+    public void parseListUrl() {
+        try {
+            String url = getPara("url");
+            try {
+                ChildrenModel.parseChildrenList(url);
+            } catch (Exception e) {
+                LOG.error("", e);
+            }
+            renderText("ok");
+        } catch (Exception e) {
+            renderText(e.getMessage());
+        }
+    }
+
+    public void batch() {
+        renderVelocity("batch.html");
+    }
+
+    public void batchParseUrl() {
+        final String urls = getPara("urls");
+        if (StringUtils.hasText(urls)) {
+            new Thread(new Runnable() {
+                public void run() {
+                    for (String url : urls.split("\\n")) {
+                        try {
+                            ChildrenModel.parseChildren(url);
+                        } catch (Exception e) {
+                            LOG.error("", e);
+                        }
+                    }
+                }
+            }).start();
+        }
+        renderText("ok");
+    }
+
+    public void batchParseListUrl() {
+        final String urls = getPara("urls");
+        if (StringUtils.hasText(urls)) {
+            new Thread(new Runnable() {
+                public void run() {
+                    for (String url : urls.split("\\n")) {
+                        try {
+                            ChildrenModel.parseChildrenList(url);
+                        } catch (Exception e) {
+                            LOG.error("", e);
+                        }
+                    }
+                }
+            }).start();
+        }
+        renderText("ok");
+    }
 }

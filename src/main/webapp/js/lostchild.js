@@ -27,7 +27,7 @@ $(function() {
 					+ '<div class="child_info">'
 						+ '<p class="child_pic"><a target="_blank" href="<%=infoFromUrl%>"><img src="<%=pic%>" alt="" title="<%=realname%>" width="246" height="330" style="margin-left: -7.413412563667228px; margin-top: 0px; "></a></p>'
 						+ '<div class="info_person">'
-							+ '<p><span>姓 名：</span><%=realname%></p><p><span>性 别：</span>女</p><p><span>出生日期：</span><%=birthday%></p>'
+							+ '<p><span>姓 名：</span><%=realname%></p><p><span>性 别：</span><%if(sex==0){%>男<%}else{%>女<%}%></p><p><span>出生日期：</span><%=birthday%></p>'
 							+ '<p><span>失踪时间：</span><%=lostTime%></p>'
 							+ '<p><span>失踪地点：</span><%=lostAddr%></p>'
 							+ '<p><span>失踪人特征描述：</span><%=tezheng%></p>'
