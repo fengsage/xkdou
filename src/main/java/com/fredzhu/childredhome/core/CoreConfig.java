@@ -4,9 +4,6 @@
 package com.fredzhu.childredhome.core;
 
 import com.fredzhu.childredhome.model.ChildrenModel;
-import com.fredzhu.childredhome.servlet.ApiController;
-import com.fredzhu.childredhome.servlet.IndexController;
-import com.fredzhu.childredhome.servlet.ToolsController;
 import com.fredzhu.childredhome.util.PropertiesHelp;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
@@ -41,7 +38,7 @@ import com.jfinal.render.ViewType;
 public class CoreConfig extends JFinalConfig {
 	
 	/**模板地址*/
-	private static final String	TEMPATE_PATH	= "/WEB-INF/templates";
+	public static final String	TEMPATE_PATH	= "/WEB-INF/templates";
 	
 	/**
 	 * @param me
@@ -60,9 +57,7 @@ public class CoreConfig extends JFinalConfig {
 	 */
 	@Override
 	public void configRoute(Routes me) {
-		me.add("/", IndexController.class, TEMPATE_PATH);
-		me.add("/api", ApiController.class, TEMPATE_PATH + "/api");
-		me.add("/tools", ToolsController.class, TEMPATE_PATH + "/tools");
+		new RoutesConfig().configRoute(me);
 	}
 	
 	/**

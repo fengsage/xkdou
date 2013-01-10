@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2012 All Rights Reserved.
  */
-package com.fredzhu.childredhome.servlet;
+package com.fredzhu.childredhome.controller;
 
 import java.util.List;
 

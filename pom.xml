@@ -109,7 +109,7 @@
 			<id>test</id>
 			<properties>
 				<prop.jdbc.children.wrt.driver>com.mysql.jdbc.Driver</prop.jdbc.children.wrt.driver>
-				<prop.jdbc.children.wrt.url>jdbc:mysql://127.0.0.1/db_childrenhome?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull</prop.jdbc.children.wrt.url>
+				<prop.jdbc.children.wrt.url>jdbc:mysql://127.0.0.1/db_xkdou?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull</prop.jdbc.children.wrt.url>
 				<prop.jdbc.children.wrt.username>root</prop.jdbc.children.wrt.username>
 				<prop.jdbc.children.wrt.password>root</prop.jdbc.children.wrt.password>
 			</properties>
@@ -119,7 +119,7 @@
 			<id>kuci</id>
 			<properties>
 				<prop.jdbc.children.wrt.driver>com.mysql.jdbc.Driver</prop.jdbc.children.wrt.driver>
-				<prop.jdbc.children.wrt.url>jdbc:mysql://127.0.0.1/db_childrenhome?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull</prop.jdbc.children.wrt.url>
+				<prop.jdbc.children.wrt.url>jdbc:mysql://127.0.0.1/db_xkdou?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull</prop.jdbc.children.wrt.url>
 				<prop.jdbc.children.wrt.username>root</prop.jdbc.children.wrt.username>
 				<prop.jdbc.children.wrt.password></prop.jdbc.children.wrt.password>
 			</properties>
@@ -128,9 +128,9 @@
 			<id>prd</id>
 			<properties>
 				<prop.jdbc.children.wrt.driver>com.mysql.jdbc.Driver</prop.jdbc.children.wrt.driver>
-				<prop.jdbc.children.wrt.url>jdbc:mysql://localhost/db_childrenhome?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull</prop.jdbc.children.wrt.url>
-				<prop.jdbc.children.wrt.username>db_childrenhome</prop.jdbc.children.wrt.username>
-				<prop.jdbc.children.wrt.password>NBs8ptNmwWQJVs43</prop.jdbc.children.wrt.password>
+				<prop.jdbc.children.wrt.url>jdbc:mysql://localhost/db_xkdou?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull</prop.jdbc.children.wrt.url>
+				<prop.jdbc.children.wrt.username>db_xkdou</prop.jdbc.children.wrt.username>
+				<prop.jdbc.children.wrt.password>Eseuy5P8mpX6eQwR</prop.jdbc.children.wrt.password>
 			</properties>
 		</profile>
 	</profiles>

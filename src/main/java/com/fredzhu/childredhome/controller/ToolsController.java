@@ -2,7 +2,7 @@
  * jiangjia.la Inc.
  * Copyright (c) 2012 All Rights Reserved.
  */
-package com.fredzhu.childredhome.servlet;
+package com.fredzhu.childredhome.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
