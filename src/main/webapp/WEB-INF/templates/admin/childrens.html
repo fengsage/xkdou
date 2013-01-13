@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>小蝌蚪后台管理</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="stylesheet" type="text/css" href="/easyui/themes/gray/easyui.css"></link>
+<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css"></link>
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+	$(function() {
+		$('#datagrid').datagrid({  
+			title:'小蝌蚪管理',
+		    url:'childrenList',  
+		    fitColumns : true,
+		    columns:[[  
+		        {field:'realname',title:'真实姓名',width:150}, 
+		        {field:'sex',title:'性别',width:50,align:'center',
+		        	formatter:function(value,row,index){
+		        		if(value == 0){
+		        			return "男";
+		        		}else{
+		        			return "女";
+		        		}
+		        	}
+		        }, 
+		        {field:'pic',title:'照片',width:50,align:'center',
+		        	formatter:function(value,row,index){
+		        		if(value == ""){
+							return "无";		        			
+		        		}else{
+		        			return "<img src='"+value+"' style='width:50px;height:50px;'/>";
+		        		}
+		        	}
+		        }, 
+		       {field:'birthday',title:'出生年月',width:100,align:'center'},
+		       {field:'height',title:'身高',width:100,align:'center'},
+		       {field:'info_from_url',title:'数据来源',width:50,align:'center',
+		    	   formatter:function(value,row,index){
+		    		   return '<a href="'+value+'" target="_blank">'+row.info_from+'</a>';
+		    	   }
+		       },
+		       {field:'is_show',title:'显示',width:50,align:'center',
+		        	formatter:function(value,row,index){
+		        		var a = '<a class="icon-ok"></a>';
+			        	if(value == 0)
+			        	{
+			        		a = '<a class="icon-remove"></a>';
+			        	}
+		        		return a;
+		        	}
+		        },
+		       {field:'create_time',title:'创建时间',width:100,align:'center'},
+		        {field:'action',title:'操作',width:50,align:'center',
+		        	formatter:function(value,row,index){
+		        		var a = "<a href='javascript:edit()'>编辑</a> ";
+		        		var b = "<a href='javascript:del()'>删除</a> ";
+		        		return a + " " + b;
+		        	}
+		        }
+		    ]],
+			pagination:true,
+			rownumbers:true,
+			pageSize:20,
+			singleSelect:true,
+			onDblClickRow:function(){
+				edit();
+			}
+		});  
+
+	});
+	
+	function edit() {
+		var row = $('#datagrid').datagrid('getSelected');
+		if (row){
+	    	$('#dialog').dialog('open').dialog('setTitle','修改小蝌蚪');
+			$('#fm').form('load',row);
+			
+		}else{
+			$.messager.alert('警告', '请先选择编辑的选项');
+		}
+	}
+	
+	function del() {
+		$.messager.confirm('删除小蝌蚪','你确定要删除这个小蝌蚪吗?',function(r){
+		    if (r){  
+				$.getJSON('levelsDel',{'id':id},function(data){
+					if(data.result=="success"){
+						$('#datagrid').datagrid('reload');
+					}else{
+		        		$.messager.show({
+		        			title: '出错啦!',
+		        			msg: data.message
+		        		});
+					}
+				});
+		    }  
+		});
+	}
+</script>
+<!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+<body>
+	<div class="navbar">
+		<div class="navbar-inner">
+			<a class="brand" href="#">小蝌蚪后台管理</a>
+			<ul class="nav">
+				<li class="active"><a href="#">小蝌蚪</a></li>
+				<li><a href="#">系统设置</a></li>
+				<li><a href="#">JOB</a></li>
+			</ul>
+		</div>
+	</div>
+	
+	<table id="datagrid"></table>
+	
+<!-- 新增/编辑 -->
+<div id="dialog" class="easyui-dialog" style="width:600px;height:500px;padding:20px;" closed="true" buttons="#dlg-buttons">
+	<form id="fm" method="post" novalidate action="#">
+	    <input type="hidden" name="id"/>
+		<div class="fitem">
+			<label>真实姓名</label>
+			<input id="name" name="realname" class="easyui-validatebox txt_fm_mmp" required="true"> 
+		</div>
+		<div class="fitem">
+			<label>性别</label>
+			<select id="sel_sex" name="sex" class="easyui-combobox  easyui-validatebox" required="true">
+				<option value="0">男</option>
+				<option value="1">女</option>
+			</select>
+		</div>
+		<div class="fitem">
+			<label>真实姓名</label>
+			<input id="name" name="realname" class="easyui-validatebox txt_fm_mmp" required="true"> 
+		</div>
+		<div class="fitem">
+			<label>是否显示</label>
+			<select id="sel_is_show" name="is_show" class="easyui-combobox  easyui-validatebox" required="true">
+				<option value="1">显示</option>
+				<option value="0">不显示</option>
+			</select>
+		</div>
+	</form>
+</div>
+<div id="dlg-buttons">
+	<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-ok" onclick="post()">提交</a>
+	<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dialog').dialog('close')">取消</a>
+</div>
+
+
+</body>
+</html>

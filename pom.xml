@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.fredzhu</groupId>
-	<artifactId>lostchild</artifactId>
+	<artifactId>xkdou</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>jfinal</name>
+	<name>xkdou</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>

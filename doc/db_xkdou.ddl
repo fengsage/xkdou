@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS `child_info` (
   `lost_addr` VARCHAR(500) NOT NULL DEFAULT '' COMMENT '走势地点',
   `tezheng` VARCHAR(2048) NOT NULL DEFAULT '' COMMENT '特征',
   `remark` VARCHAR(2048) NOT NULL DEFAULT '' COMMENT '描述',
+  `is_show` tinyint(3) NOT NULL DEFAULT '0' COMMENT '是否前台显示',
   `create_time` DATETIME  DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
   `update_time` timestamp  DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`),
