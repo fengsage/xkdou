@@ -13,13 +13,28 @@
 <script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/easyui/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="/js/bootstrap.min.js"></script>
-
+<script type="text/javascript" src="/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
 	$(function() {
 		$('#datagrid').datagrid({  
 			title:'小蝌蚪管理',
 		    url:'childrenList',  
 		    fitColumns : true,
+		    toolbar :[
+		    	{
+		    		text: '添加',
+		    		iconCls: 'icon-add',
+		    		handler: function(){add();}
+		    	},'-',
+		    	{
+		    		text: '批量显示',
+		    		handler: function(){show(true);}	
+		    	},
+		    	{
+		    		text: '批量不显示',
+		    		handler: function(){show(false);}	
+		    	} 
+		    ],
 		    columns:[[  
 		        {field:'realname',title:'真实姓名',width:150}, 
 		        {field:'sex',title:'性别',width:50,align:'center',
@@ -41,6 +56,7 @@
 		        	}
 		        }, 
 		       {field:'birthday',title:'出生年月',width:100,align:'center'},
+		       {field:'lost_time',title:'丢失时间',width:100,align:'center'},
 		       {field:'height',title:'身高',width:100,align:'center'},
 		       {field:'info_from_url',title:'数据来源',width:50,align:'center',
 		    	   formatter:function(value,row,index){
@@ -49,40 +65,51 @@
 		       },
 		       {field:'is_show',title:'显示',width:50,align:'center',
 		        	formatter:function(value,row,index){
-		        		var a = '<a class="icon-ok"></a>';
+		        		var a = '<img src="/easyui/themes/icons/ok.png"/>';
 			        	if(value == 0)
 			        	{
-			        		a = '<a class="icon-remove"></a>';
+			        		a = '<img src="/easyui/themes/icons/no.png"/>';
 			        	}
 		        		return a;
 		        	}
 		        },
-		       {field:'create_time',title:'创建时间',width:100,align:'center'},
-		        {field:'action',title:'操作',width:50,align:'center',
+		       {field:'action',title:'操作',width:50,align:'center',
 		        	formatter:function(value,row,index){
 		        		var a = "<a href='javascript:edit()'>编辑</a> ";
 		        		var b = "<a href='javascript:del()'>删除</a> ";
 		        		return a + " " + b;
 		        	}
-		        }
+		        },
+		        {field:'checkbox',title:'',width:100,align:'center',checkbox:true},
 		    ]],
 			pagination:true,
 			rownumbers:true,
-			pageSize:20,
-			singleSelect:true,
-			onDblClickRow:function(){
-				edit();
-			}
+			pageSize:20
 		});  
 
+		$("#ss").appendTo('.datagrid-toolbar');
+		$('#ss').searchbox({  
+		    searcher:function(value,name){  
+		    	var param = {"realname":value};
+		    	$('#datagrid').datagrid('load',param);
+		    },  
+		    menu:'#mm',  
+		    prompt:'请输入查询内容'  
+		});  
+		
+		
 	});
+	
+	function add(){
+		$('#dialog').dialog('open').dialog('setTitle','添加小蝌蚪');
+		$('#fm').form('clear');
+	}
 	
 	function edit() {
 		var row = $('#datagrid').datagrid('getSelected');
 		if (row){
 	    	$('#dialog').dialog('open').dialog('setTitle','修改小蝌蚪');
 			$('#fm').form('load',row);
-			
 		}else{
 			$.messager.alert('警告', '请先选择编辑的选项');
 		}
@@ -90,8 +117,9 @@
 	
 	function del() {
 		$.messager.confirm('删除小蝌蚪','你确定要删除这个小蝌蚪吗?',function(r){
-		    if (r){  
-				$.getJSON('levelsDel',{'id':id},function(data){
+		    if (r){ 
+		    	var row = $('#datagrid').datagrid('getSelected');
+				$.getJSON('childDel',{'id':row.id},function(data){
 					if(data.result=="success"){
 						$('#datagrid').datagrid('reload');
 					}else{
@@ -104,6 +132,65 @@
 		    }  
 		});
 	}
+	
+	function show(is_show){
+		var selected = $('#datagrid').datagrid('getSelections');
+		var ids = "";
+		$.each(selected,function(i,n){
+			if(ids != ""){
+				ids += ",";
+			}
+			ids += n.id;
+		})
+		if(ids == ""){
+			$.messager.alert("警告","请选择批量处理的项目");
+			return false;
+		}
+		$.ajax({
+			type: "POST",
+			url: "childShow",
+			data : "ids="+ids+"&is_show="+is_show,
+			dataType : "json",
+			success: function(result){
+				if (result.result == "success"){
+					$('#datagrid').datagrid('reload');
+				}else{
+					$.messager.show({
+						title: '出错啦!',
+						msg: result.message
+					});
+				}
+			}
+		});
+	}
+	
+	function post(){
+		var id = $("input[name=id]").val();
+		var submit_url = 'childNew';
+		if(id!=''){
+			submit_url = 'childUpdate';
+		}
+		//提交表单
+		$('#fm').form('submit',{
+			url: submit_url,
+			onSubmit: function(){
+				return $(this).form('validate');
+			},
+			success: function(result){
+				var result = eval('('+result+')');
+				if (result.result == "success"){
+					$('#dialog').dialog('close');
+					$('#datagrid').datagrid('reload');
+				}else{
+					$.messager.show({
+						title: '出错啦!',
+						msg: result.message
+					});
+				}
+			}
+		});
+	}
+	
 </script>
 <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -119,9 +206,15 @@
 				<li><a href="#">JOB</a></li>
 			</ul>
 		</div>
+		<table id="datagrid"></table>
+		<!-- 搜索 -->
+		<input id="ss"></input>  
+		<div id="mm" style="width:120px">  
+		    <div data-options="name:'realname'">真实姓名</div>  
+		</div>  
+
 	</div>
 	
-	<table id="datagrid"></table>
 	
 <!-- 新增/编辑 -->
 <div id="dialog" class="easyui-dialog" style="width:600px;height:500px;padding:20px;" closed="true" buttons="#dlg-buttons">
@@ -129,7 +222,7 @@
 	    <input type="hidden" name="id"/>
 		<div class="fitem">
 			<label>真实姓名</label>
-			<input id="name" name="realname" class="easyui-validatebox txt_fm_mmp" required="true"> 
+			<input id="name" name="realname" class="easyui-validatebox txt_fm_mmp" required="true"></input>
 		</div>
 		<div class="fitem">
 			<label>性别</label>
@@ -139,8 +232,24 @@
 			</select>
 		</div>
 		<div class="fitem">
-			<label>真实姓名</label>
-			<input id="name" name="realname" class="easyui-validatebox txt_fm_mmp" required="true"> 
+			<label>照片</label>
+			<input id="pic" name="pic" class="easyui-validatebox txt_fm_mmp" required="true"></input>
+		</div>
+		<div class="fitem">
+			<label>出生年月</label>
+			<input id="birthday" name="birthday" class="easyui-validatebox txt_fm_mmp" required="true" onClick="WdatePicker()"> </input>
+		</div>
+		<div class="fitem">
+			<label>丢失时间</label>
+			<input id="lost_time" name="lost_time" class="easyui-validatebox txt_fm_mmp" required="true" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"> </input>
+		</div>
+		<div class="fitem">
+			<label>丢失地点</label>
+			<input id="lost_addr" name="lost_addr" class="easyui-validatebox txt_fm_mmp" required="true"> </input>
+		</div>
+		<div class="fitem">
+			<label>身高</label>
+			<input id="height" name="height" class="easyui-validatebox txt_fm_mmp" required="true"> </input>
 		</div>
 		<div class="fitem">
 			<label>是否显示</label>
@@ -148,6 +257,14 @@
 				<option value="1">显示</option>
 				<option value="0">不显示</option>
 			</select>
+		</div>
+		<div class="fitem">
+			<label>特征</label>
+			<input id="tezheng" name="tezheng" class="easyui-validatebox txt_fm_mmp" required="true"> </input>
+		</div>
+		<div class="fitem">
+			<label>备注</label>
+			<textarea id="remark" name="remark" class="easyui-validatebox txt_fm_mmp" required="true" rows="" cols=""></textarea>
 		</div>
 	</form>
 </div>

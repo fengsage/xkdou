@@ -50,8 +50,8 @@ public class ChildrenModel extends Model<ChildrenModel> {
 		List<Children> list = new ArrayList<Children>();
 		
 		List<ChildrenModel> records = dao.find(
-			"select * from child_info where pic!='' order by rand() limit ?", size <= 10 ? size
-				: 10);
+			"select * from child_info where pic!='' and is_show = 1 order by rand() limit ?",
+			size <= 10 ? size : 10);
 		for (ChildrenModel record : records) {
 			Children children = new Children();
 			if (record.getDate("birthday") != null)

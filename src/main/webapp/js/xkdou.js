@@ -59,7 +59,6 @@ function jqInit(){
 						+'</div>'
 					+'</div>'
 					+'<div class="ft">'
-							+ '<p class="support_company"><a target="_blank" href="http://e.t.qq.com/Tencent-Volunteers" title="腾讯志愿者">腾讯志愿者</a></p>'
 							+ '<p class="baby_back"><a target="_blank" href="http://bbs.baobeihuijia.com/" title="宝贝回家">宝贝回家</a></p>'
 							+ '<p class="side_infos"><a target="_blank" href="<%=infoFromUrl%>" title="查看详细信息">详细</a>'
 								+ '<span class="symbol"></span>' 
