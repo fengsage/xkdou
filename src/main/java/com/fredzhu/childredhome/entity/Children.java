@@ -60,6 +60,14 @@ public class Children implements Serializable, ParseResult {
 
     private String            remark;
 
+    private Boolean           isShow;
+
+    private Boolean           isDel;
+
+    private Boolean           isFinded;
+
+    private Integer           type;
+
     public String getRealname() {
         return realname;
     }
@@ -164,13 +172,45 @@ public class Children implements Serializable, ParseResult {
         this.pic = pic;
     }
 
+    public Boolean getIsShow() {
+        return isShow;
+    }
+
+    public void setIsShow(Boolean isShow) {
+        this.isShow = isShow;
+    }
+
+    public Boolean getIsDel() {
+        return isDel;
+    }
+
+    public void setIsDel(Boolean isDel) {
+        this.isDel = isDel;
+    }
+
+    public Boolean getIsFinded() {
+        return isFinded;
+    }
+
+    public void setIsFinded(Boolean isFinded) {
+        this.isFinded = isFinded;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return String
             .format(
-                "Children [realname=%s, pic=%s, infoFrom=%s, infoFromNo=%s, infoFromUrl=%s, sex=%s, birthday=%s, height=%s, weight=%s, lostTime=%s, lostAddr=%s, tezheng=%s, remark=%s]",
+                "Children [realname=%s, pic=%s, infoFrom=%s, infoFromNo=%s, infoFromUrl=%s, sex=%s, birthday=%s, height=%s, weight=%s, lostTime=%s, lostAddr=%s, tezheng=%s, remark=%s, isShow=%s, isDel=%s, isFinded=%s, type=%s]",
                 realname, pic, infoFrom, infoFromNo, infoFromUrl, sex, birthday, height, weight,
-                lostTime, lostAddr, tezheng, remark);
+                lostTime, lostAddr, tezheng, remark, isShow, isDel, isFinded, type);
     }
 
 }

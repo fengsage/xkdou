@@ -3,7 +3,6 @@
 		$('#datagrid').datagrid({  
 			title:'小蝌蚪管理',
 		    url:'childrenList',  
-		    fitColumns : true,
 		    toolbar :[
 		    	{
 		    		text: '添加',
@@ -37,7 +36,7 @@
 		        		}
 		        	}
 		        }, 
-		        {field:'pic',title:'照片',width:50,align:'center',
+		        {field:'pic',title:'照片',width:60,align:'center',
 		        	formatter:function(value,row,index){
 		        		if(value == ""){
 							return "无";		        			
@@ -47,9 +46,9 @@
 		        	}
 		        }, 
 		       {field:'birthday',title:'出生年月',width:100,align:'center'},
-		       {field:'lost_time',title:'丢失时间',width:100,align:'center'},
+		       {field:'lost_time',title:'丢失时间',width:130,align:'center'},
 		       {field:'height',title:'身高',width:100,align:'center'},
-		       {field:'info_from_url',title:'数据来源',width:50,align:'center',
+		       {field:'info_from_url',title:'数据来源',width:100,align:'center',
 		    	   formatter:function(value,row,index){
 		    		   return '<a href="'+value+'" target="_blank">'+row.info_from+'</a>';
 		    	   }
@@ -64,14 +63,25 @@
 		        		return a;
 		        	}
 		        },
-		       {field:'action',title:'操作',width:50,align:'center',
+		       {field:'is_finded',title:'回家',width:50,align:'center',
+		        	formatter:function(value,row,index){
+		        		var a = '<img src="/easyui/themes/icons/ok.png"/>';
+			        	if(value == 0)
+			        	{
+			        		a = '<img src="/easyui/themes/icons/no.png"/>';
+			        	}
+		        		return a;
+		        	}
+		        },
+			   {field:'create_time',title:'收录时间',width:130,align:'center'},
+		       {field:'action',title:'操作',width:100,align:'center',
 		        	formatter:function(value,row,index){
 		        		var a = "<a href='javascript:del();'>删除</a> ";
 		        		var b = "<a href='javascript:refresh();'>刷新</a> ";
 		        		return a + " " + b;
 		        	}
 		        },
-		        {field:'checkbox',title:'',width:100,align:'center',checkbox:true},
+		        {field:'checkbox',title:'',width:100,align:'center',checkbox:true}
 		    ]],
 			pagination:true,
 			rownumbers:true,

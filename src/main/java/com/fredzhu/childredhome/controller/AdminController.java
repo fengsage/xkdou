@@ -41,7 +41,9 @@ import com.jfinal.plugin.activerecord.Record;
  */
 public class AdminController extends BaseController {
 
-    private static final Logger LOG = Logger.getLogger(AdminController.class);
+    private static final Logger LOG   = Logger.getLogger(AdminController.class);
+
+    private ChildrenModel       model = new ChildrenModel();
 
     public void login() {
         renderVelocity("login.vm");
@@ -151,7 +153,7 @@ public class AdminController extends BaseController {
                 }
                 //TODO 不是所有的都可以重新采集 
                 InfoFromEnum from = InfoFromEnum.getByCode(record.getStr("info_from"));
-                Children children = ChildrenModel.parseChildren(record.getStr("info_from_url"));
+                Children children = model.parseChildren(record.getStr("info_from_url"));
                 if (children == null) {
                     throw new RuntimeException("重新采集数据失败,id=" + id + ",数据来源=" + from);
                 }
@@ -179,7 +181,7 @@ public class AdminController extends BaseController {
                 public void run() {
                     for (String url : urls.split("\\n")) {
                         try {
-                            ChildrenModel.parseChildren(url);
+                            model.parseChildren(url);
                         } catch (Exception e) {
                             LOG.error("", e);
                         }
@@ -197,7 +199,7 @@ public class AdminController extends BaseController {
                 public void run() {
                     for (String url : urls.split("\\n")) {
                         try {
-                            ChildrenModel.parseChildrenList(url);
+                            model.parseChildrenList(url);
                         } catch (Exception e) {
                             LOG.error("", e);
                         }
