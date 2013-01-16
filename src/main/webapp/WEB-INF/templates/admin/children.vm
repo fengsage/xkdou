@@ -5,19 +5,24 @@
 		    url:'childrenList',  
 		    toolbar :[
 		    	{
-		    		text: '添加',
-		    		iconCls: 'icon-add',
-		    		handler: function(){add();}
-		    	},'-',
-		    	{
-		    		text: '批量显示',
+		    		text: '显示',
 		    		iconCls: 'icon-ok',
-		    		handler: function(){show(true);}	
+		    		handler: function(){batchUpdate("is_show",1);}	
 		    	},
 		    	{
-		    		text: '批量不显示',
+		    		text: '不显示',
 		    		iconCls: 'icon-no',
-		    		handler: function(){show(false);}	
+		    		handler: function(){batchUpdate("is_show",0);}	
+		    	},"-",
+		    	{
+		    		text: '回家',
+		    		iconCls: 'icon-ok',
+		    		handler: function(){batchUpdate("is_finded",1);}	
+		    	},
+		    	{
+		    		text: '流浪',
+		    		iconCls: 'icon-no',
+		    		handler: function(){batchUpdate("is_finded",0);}	
 		    	},"-",
 		    	{
 		    		text: '批量刷新',
@@ -194,7 +199,7 @@
 		return ids;
 	}
 	
-	function show(is_show){
+	function batchUpdate(data,value){
 		var ids = getSelectIds();
 		if(ids == ""){
 			$.messager.alert("警告","请选择批量处理的项目");
@@ -203,8 +208,8 @@
 		$('#datagrid').datagrid('loading');
 		$.ajax({
 			type: "POST",
-			url: "childShow",
-			data : "ids="+ids+"&is_show="+is_show,
+			url: "childBatchUpdate",
+			data : "ids="+ids+"&data="+data+"&value="+value,
 			dataType : "json",
 			success: function(result){
 				$('#datagrid').datagrid('reload');
@@ -219,6 +224,7 @@
 			}
 		});
 	}
+	
 	
 	function post(){
 		var id = $("input[name=id]").val();
@@ -252,60 +258,77 @@
 <table id="datagrid"></table>
 <!-- 搜索 -->
 <input id="ss"></input>  
-<div id="mm" style="width:120px">  
+<div id="mm" style="width:120px">
 	<div data-options="name:'realname'">真实姓名</div>  
-</div>  
+</div>
 
 <!-- 新增/编辑 -->
-<div id="dialog" class="easyui-dialog" style="width:600px;height:500px;padding:20px;" closed="true" buttons="#dlg-buttons">
+<div id="dialog" class="easyui-dialog" style="width:700px;height:520px;padding:20px;" closed="true" buttons="#dlg-buttons">
 	<form id="fm" method="post" novalidate action="#">
-	    <input type="hidden" name="id"/>
-		<div class="fitem">
-			<label>真实姓名</label>
-			<input id="name" name="realname" class="easyui-validatebox txt_fm_mmp" required="true"></input>
-		</div>
-		<div class="fitem">
-			<label>性别</label>
-			<select id="sel_sex" name="sex" class="easyui-combobox  easyui-validatebox" required="true">
-				<option value="0">男</option>
-				<option value="1">女</option>
-			</select>
-		</div>
-		<div class="fitem">
-			<label>照片</label>
-			<input id="pic" name="pic" class="easyui-validatebox txt_fm_mmp" required="true" validType="url"></input>
-		</div>
-		<div class="fitem">
-			<label>出生年月</label>
-			<input id="birthday" name="birthday" class="easyui-validatebox txt_fm_mmp"  onClick="WdatePicker()"> </input>
-		</div>
-		<div class="fitem">
-			<label>丢失时间</label>
-			<input id="lost_time" name="lost_time" class="easyui-validatebox txt_fm_mmp" required="true" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"> </input>
-		</div>
-		<div class="fitem">
-			<label>丢失地点</label>
-			<input id="lost_addr" name="lost_addr" class="easyui-validatebox txt_fm_mmp" required="true"> </input>
-		</div>
-		<div class="fitem">
-			<label>身高</label>
-			<input id="height" name="height" class="easyui-validatebox txt_fm_mmp" required="true"> </input>
-		</div>
-		<div class="fitem">
-			<label>是否显示</label>
-			<select id="sel_is_show" name="is_show" class="easyui-combobox  easyui-validatebox" required="true">
-				<option value="1">显示</option>
-				<option value="0">不显示</option>
-			</select>
-		</div>
-		<div class="fitem">
-			<label>特征</label>
-			<input id="tezheng" name="tezheng" class="easyui-validatebox txt_fm_mmp" required="true"> </input>
-		</div>
-		<div class="fitem">
-			<label>备注</label>
-			<textarea id="remark" name="remark" class="easyui-validatebox txt_fm_mmp" required="true" rows="" cols=""></textarea>
-		</div>
+	<div class="row-fluid">
+	  <div class="span6">
+		    <input type="hidden" name="id"/>
+			<div class="fitem">
+				<label>真实姓名</label>
+				<input id="name" name="realname" class="easyui-validatebox txt_fm_mmp" required="true"></input>
+			</div>
+			<div class="fitem">
+				<label>性别</label>
+				<select id="sel_sex" name="sex" class="easyui-combobox  easyui-validatebox" required="true">
+					<option value="0">男</option>
+					<option value="1">女</option>
+				</select>
+			</div>
+			<div class="fitem">
+				<label>照片</label>
+				<input id="pic" name="pic" class="easyui-validatebox txt_fm_mmp" required="true" validType="url"></input>
+			</div>
+			<div class="fitem">
+				<label>丢失时间</label>
+				<input id="lost_time" name="lost_time" class="easyui-validatebox txt_fm_mmp" required="true" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"> </input>
+			</div>
+	  </div>
+	  <div class="span6">
+			<div class="fitem">
+				<label>出生年月</label>
+				<input id="birthday" name="birthday" class="easyui-validatebox txt_fm_mmp"  onClick="WdatePicker()"> </input>
+			</div>
+			<div class="fitem">
+				<label>身高</label>
+				<input id="height" name="height" class="easyui-validatebox txt_fm_mmp" required="true"> </input>
+			</div>
+			<div class="fitem">
+				<label>是否显示</label>
+				<select id="sel_is_show" name="is_show" class="easyui-combobox  easyui-validatebox" required="true">
+					<option value="1">显示</option>
+					<option value="0">不显示</option>
+				</select>
+			</div>
+			<div class="fitem">
+				<label>是否回家</label>
+				<select id="sel_is_finded" name="is_finded" class="easyui-combobox  easyui-validatebox" required="true">
+					<option value="1">回家</option>
+					<option value="0">流浪</option>
+				</select>
+			</div>
+	  </div>
+	</div>
+	  <div class="row-fluid">
+	  	<div class="span12">
+			<div class="fitem">
+				<label>丢失地点</label>
+				<input id="lost_addr" name="lost_addr" class="easyui-validatebox txt_fm_mmp" required="true"> </input>
+			</div>
+			<div class="fitem">
+				<label>特征</label>
+				<textarea id="tezheng" name="tezheng" class="easyui-validatebox txt_fm_mmp" required="true" rows="" cols="60"></textarea>
+			</div>
+			<div class="fitem">
+				<label>备注</label>
+				<textarea id="remark" name="remark" class="easyui-validatebox txt_fm_mmp" required="true" rows="" cols="60"></textarea>
+			</div>
+	  	</div>
+	  </div>
 	</form>
 </div>
 <div id="dlg-buttons">

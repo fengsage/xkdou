@@ -109,6 +109,10 @@ input[type="submit"] {
   -webkit-appearance: button;
 }
 
+input{
+	border: 1px solid gray;
+}
+
 label,
 select,
 button,
