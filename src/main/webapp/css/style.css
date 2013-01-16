@@ -1,2 +1,151 @@
-﻿html,body,p,div{margin:0;padding:0}body{font:12px/1.33 'Hiragino Sans GB','Microsoft Yahei'}.mod_lost_child{width:720px;margin:50px auto;color:#000;font-size:14px;border:1px solid #9EAA99;border-radius:3px;box-shadow:0 0 4px rgba(0,0,0,.25)}.mod_lost_child .hd{position:relative;padding-left:280px;height:98px;background:#F9F9F9;border-bottom:1px solid #D9D9D9}.mod_lost_child .hd p{color:#545454;font-size:18px;top:22px;left:300px;font-weight:bold}.mod_lost_child .hd p span{display:block}.mod_lost_child .hd .wrong{position:absolute;font-size:48px;color:#333;_font-size:52px}.mod_lost_child .hd .other_info{position:absolute;top:32px;left:415px;width:250px;line-height:1.33}.mod_lost_child .bd{padding:12px 30px 18px}.mod_lost_child .child_info{position:relative;*zoom:1}.mod_lost_child .child_info .child_pic{padding:8px;border-radius:5px;position:absolute;top:-80px;left:0;background:url(http://qzonestyle.gtimg.cn/qzone_v6/lostchild/img/bg.png?max_age=19830211&d=20121213181758) no-repeat}.mod_lost_child .child_info .child_pic a{display:block;width:220px;height:330px;overflow:hidden;text-align:center;border-radius:3px}.mod_lost_child .child_info .child_pic img{vertical-align:top;border:0 none;border-radius:5px}.mod_lost_child .child_info .info_person{padding:5px 0 11px 270px;min-height:240px;_height:240px}.mod_lost_child .child_info .info_person p{color:#000;font-weight:bold;line-height:30px}.mod_lost_child .child_info .info_person span,.mod_lost_child .info_details p span{color:#545454;font-weight:normal}.mod_lost_child .info_details{padding:15px;background:#F2F2F2;border-radius:5px;box-shadow:inset 0 0 5px rgba(0,0,0,.15)}.mod_lost_child .info_details p{line-height:2}.mod_lost_child .ft{border-top:1px solid #D9D9D9;*zoom:1}.mod_lost_child .ft:after{clear:both;height:0;display:block;content:""}.mod_lost_child .ft p{padding:20px 30px 20px 15px;text-align:right}.mod_lost_child .ft .support_company{float:left;border-right:1px solid #E5E5E5;padding-left:30px}.mod_lost_child .ft .support_company a{display:inline-block;width:50px;height:50px;line-height:150px;overflow:hidden;background:url(http://qzonestyle.gtimg.cn/qzone_v6/lostchild/img/tc_gy.png?max_age=19830211&d=20121213181758) no-repeat}.mod_lost_child .ft .baby_back{float:left;padding:25px 0 25px 30px}.mod_lost_child .ft .baby_back a{display:inline-block;width:107px;height:40px;line-height:150px;overflow:hidden;background:url(http://qzonestyle.gtimg.cn/qzone_v6/lostchild/img/baby_back.png?max_age=19830211&d=20121213181758) no-repeat}.mod_lost_child .ft .side_infos{padding:37px 30px 0}.mod_lost_child .ft .side_infos a{color:#545454;text-decoration:none;font-weight:bold}.mod_lost_child .ft .side_infos .symbol{border-right:1px solid #999;display:inline-block;height:16px;margin:0 10px;vertical-align:-3px;*vertical-align:middle}
-#GeneratedByCssGaga184{transform:rotate(20121213181758deg)}/*  |xGv00|5b9dc9bcb35ca25d7e5556cd448d9d36 */
+﻿html,body,p,div {
+	margin:0;
+	padding:0
+}
+body {
+	font:12px/1.33 'Hiragino Sans GB','Microsoft Yahei'
+}
+.mod_lost_child {
+	width:720px;
+	margin:50px auto;
+	color:#000;
+	font-size:14px;
+}
+.mod_lost_child .hd {
+	position:relative;
+	padding-left:280px;
+	height:98px;
+	background:#F9F9F9;
+	border-bottom:1px solid #D9D9D9
+}
+.mod_lost_child .hd p {
+	color:#545454;
+	font-size:18px;
+	top:22px;
+	left:300px;
+	font-weight:bold
+}
+.mod_lost_child .hd p span {
+	display:block
+}
+.mod_lost_child .hd .wrong {
+	position:absolute;
+	font-size:48px;
+	color:#333;
+	_font-size:52px
+}
+.mod_lost_child .hd .other_info {
+	position:absolute;
+	top:32px;
+	left:415px;
+	width:250px;
+	line-height:1.33
+}
+.mod_lost_child .bd {
+	padding:12px 30px 18px
+}
+.mod_lost_child .child_info {
+	position:relative;
+	*zoom:1
+}
+.mod_lost_child .child_info .child_pic {
+	padding:8px;
+	border-radius:5px;
+	position:absolute;
+	top:-80px;
+	left:0;
+}
+.mod_lost_child .child_info .child_pic a {
+	display:block;
+	width:220px;
+	height:330px;
+	overflow:hidden;
+	text-align:center;
+	border-radius:3px
+}
+.mod_lost_child .child_info .child_pic img {
+	vertical-align:top;
+	border:0 none;
+	border-radius:5px
+}
+.mod_lost_child .child_info .info_person {
+	padding:5px 0 11px 270px;
+	min-height:240px;
+	_height:240px
+}
+.mod_lost_child .child_info .info_person p {
+	color:#000;
+	font-weight:bold;
+	line-height:30px
+}
+.mod_lost_child .child_info .info_person span,.mod_lost_child .info_details p span {
+	color:#545454;
+	font-weight:normal
+}
+.mod_lost_child .info_details {
+	padding:15px;
+	background:#F2F2F2;
+	border-radius:5px;
+	box-shadow:inset 0 0 5px rgba(0,0,0,.15)
+}
+.mod_lost_child .info_details p {
+	line-height:2
+}
+.mod_lost_child .ft {
+	border-top:1px solid #D9D9D9;
+	*zoom:1
+}
+.mod_lost_child .ft:after {
+	clear:both;
+	height:0;
+	display:block;
+	content:""
+}
+.mod_lost_child .ft p {
+	padding:20px 30px 20px 15px;
+	text-align:right
+}
+.mod_lost_child .ft .support_company {
+	float:left;
+	border-right:1px solid #E5E5E5;
+	padding-left:30px
+}
+.mod_lost_child .ft .support_company a {
+	display:inline-block;
+	width:50px;
+	height:50px;
+	line-height:150px;
+	overflow:hidden;
+}
+.mod_lost_child .ft .baby_back {
+	float:left;
+	padding:25px 0 25px 30px
+}
+.mod_lost_child .ft .baby_back a {
+	display:inline-block;
+	width:107px;
+	height:40px;
+	line-height:150px;
+	overflow:hidden;
+	background:url(http://www.xkdou.com/img/baby_back.png?max_age=19830211&d=20121213181758) no-repeat
+}
+.mod_lost_child .ft .side_infos {
+	padding:37px 30px 0
+}
+.mod_lost_child .ft .side_infos a {
+	color:#545454;
+	text-decoration:none;
+	font-weight:bold
+}
+.mod_lost_child .ft .side_infos .symbol {
+	border-right:1px solid #999;
+	display:inline-block;
+	height:16px;
+	margin:0 10px;
+	vertical-align:-3px;
+	*vertical-align:middle
+}
+#GeneratedByCssGaga184 {
+	transform:rotate(20121213181758deg)
+}
+/*  |xGv00|5b9dc9bcb35ca25d7e5556cd448d9d36 */

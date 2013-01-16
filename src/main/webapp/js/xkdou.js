@@ -1,23 +1,33 @@
-var domain = "http://www.xkdou.com";
+//var domain = "http://www.xkdou.com";
+var domain = "http://localhost:8080";
 
-loadJsOrCss(domain+"/js/xkdou.js","js");
 loadJsOrCss(domain+"/css/style.css","css");
+loadJsOrCss("http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js","js", function(){
+	jqInit();
+});
 
-document.body.onload = function() {
-    jqInit();
-}
 
-function loadJsOrCss(filename, filetype){ 
+function loadJsOrCss(filename, filetype, callback){ 
 	if (filetype=="js"){
 		var fileref=document.createElement('script'); 
-		fileref.setAttribute("type","text/javascript"); 
-		fileref.setAttribute("src", filename); 
+		fileref.type= "text/javascript"; 
+		fileref.src= filename; 
 	} else if (filetype=="css"){
 		var fileref=document.createElement("link"); 
-		fileref.setAttribute("rel", "stylesheet"); 
-		fileref.setAttribute("type", "text/css"); 
-		fileref.setAttribute("href", filename); 
+		fileref.rel="stylesheet"; 
+		fileref.type="text/css"; 
+		fileref.href=filename; 
 	}
+
+	fileref.onload = function(){
+		callback && callback();
+	}
+
+	fileref.onerror = function(){
+		// "javascript file load error."
+	}
+	
+	document.getElementsByTagName("head")[0].appendChild(fileref);
 }
 
 function jqInit(){
