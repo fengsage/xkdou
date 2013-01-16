@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `child_info` (
   `info_from_no` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '数据来源处编号',
   `info_from_url` VARCHAR(500) NOT NULL DEFAULT '' COMMENT '数据来源URL地址',
   `sex` tinyint NOT NULL DEFAULT '0' COMMENT '性别(0:男,1:女)',
-  `birthday` DATE NOT NULL DEFAULT '0000-00-00' COMMENT '出生年月',
+  `birthday` DATE DEFAULT '0000-00-00' COMMENT '出生年月',
   `height` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '身高',
   `weight` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '体重',
   `lost_time` DATETIME  DEFAULT '0000-00-00 00:00:00' COMMENT '走失时间',

@@ -31,19 +31,21 @@ import com.jfinal.core.Controller;
  *
  */
 public class BaseController extends Controller {
-	
-	protected static final Integer	SIZE			= 20;
-	
-	protected static final String	MESSAGE			= "message";
-	protected static final String	RESULT			= "result";
-	protected static final String	RESULT_SUCCESS	= "success";
-	protected static final String	RESULT_FAIL		= "fail";
-	
-	@SuppressWarnings("rawtypes")
-	protected Map<String, Object> buildPagination(List list, Integer count) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("total", count);
-		map.put("rows", list);
-		return map;
-	}
+
+    protected static final Integer SIZE           = 20;
+
+    protected static final String  MESSAGE        = "message";
+    protected static final String  RESULT         = "result";
+    protected static final String  RESULT_SUCCESS = "success";
+    protected static final String  RESULT_FAIL    = "fail";
+
+    protected static final String  MENU           = "menu";
+
+    @SuppressWarnings("rawtypes")
+    protected Map<String, Object> buildPagination(List list, Integer count) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("total", count);
+        map.put("rows", list);
+        return map;
+    }
 }

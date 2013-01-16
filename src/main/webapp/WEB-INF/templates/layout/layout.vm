@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>小蝌蚪后台管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" type="text/css" href="/easyui/themes/gray/easyui.css"></link>
+    <link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css"></link>
+    <link rel="stylesheet" type="text/css" href="/css/jeasyui-bootstrap.css">
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/My97DatePicker/WdatePicker.js"></script>
+    <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <style type="text/css">
+    .datagrid-toolbar {height:30px;}
+    </style>
+</head>
+<body>
+<div class="navbar">
+	<div class="navbar-inner">
+		<a class="brand" href="#">小蝌蚪后台管理</a>
+		<ul class="nav">
+			<li #if($!menu == "children")class="active"#end><a href="/admin/children">小蝌蚪</a></li>
+			<li #if($!menu == "batch")class="active"#end><a href="/admin/batch">批量采集</a></li>
+			<li #if($!menu == "setting")class="active"#end><a href="#">系统设置</a></li>
+		</ul>
+	</div>
+	$screen_content
+</div>
+
+</body>
+</html>

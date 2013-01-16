@@ -36,62 +36,62 @@ import com.jfinal.render.ViewType;
  *
  */
 public class CoreConfig extends JFinalConfig {
-	
-	/**模板地址*/
-	public static final String	TEMPATE_PATH	= "/WEB-INF/templates";
-	
-	/**
-	 * @param me
-	 * @see com.jfinal.config.JFinalConfig#configConstant(com.jfinal.config.Constants)
-	 */
-	@Override
-	public void configConstant(Constants me) {
-		me.setDevMode(true);
-		me.setViewType(ViewType.VELOCITY);
-		me.setError404View(TEMPATE_PATH + "/404.html");
-	}
-	
-	/**
-	 * @param me
-	 * @see com.jfinal.config.JFinalConfig#configRoute(com.jfinal.config.Routes)
-	 */
-	@Override
-	public void configRoute(Routes me) {
-		new RoutesConfig().configRoute(me);
-	}
-	
-	/**
-	 * @param me
-	 * @see com.jfinal.config.JFinalConfig#configPlugin(com.jfinal.config.Plugins)
-	 */
-	@Override
-	public void configPlugin(Plugins me) {
-		C3p0Plugin c3p0Plugin = new C3p0Plugin(
-			PropertiesHelp.getProperty("prop.jdbc.children.wrt.url"),
-			PropertiesHelp.getProperty("prop.jdbc.children.wrt.username"),
-			PropertiesHelp.getProperty("prop.jdbc.children.wrt.password"));
-		me.add(c3p0Plugin);
-		ActiveRecordPlugin arp = new ActiveRecordPlugin(c3p0Plugin);
-		me.add(arp);
-		
-		//
-		arp.addMapping("child_info", ChildrenModel.class);
-	}
-	
-	/**
-	 * @param me
-	 * @see com.jfinal.config.JFinalConfig#configInterceptor(com.jfinal.config.Interceptors)
-	 */
-	@Override
-	public void configInterceptor(Interceptors me) {
-	}
-	
-	/**
-	 * @param me
-	 * @see com.jfinal.config.JFinalConfig#configHandler(com.jfinal.config.Handlers)
-	 */
-	@Override
-	public void configHandler(Handlers me) {
-	}
-	
+
+    /**模板地址*/
+    public static final String TEMPATE_PATH = "/WEB-INF/templates";
+
+    /**
+     * @param me
+     * @see com.jfinal.config.JFinalConfig#configConstant(com.jfinal.config.Constants)
+     */
+    @Override
+    public void configConstant(Constants me) {
+        me.setDevMode(true);
+        me.setViewType(ViewType.VELOCITY);
+        me.setError404View(TEMPATE_PATH + "/404");
+    }
+
+    /**
+     * @param me
+     * @see com.jfinal.config.JFinalConfig#configRoute(com.jfinal.config.Routes)
+     */
+    @Override
+    public void configRoute(Routes me) {
+        new RoutesConfig().configRoute(me);
+    }
+
+    /**
+     * @param me
+     * @see com.jfinal.config.JFinalConfig#configPlugin(com.jfinal.config.Plugins)
+     */
+    @Override
+    public void configPlugin(Plugins me) {
+        C3p0Plugin c3p0Plugin = new C3p0Plugin(
+            PropertiesHelp.getProperty("prop.jdbc.children.wrt.url"),
+            PropertiesHelp.getProperty("prop.jdbc.children.wrt.username"),
+            PropertiesHelp.getProperty("prop.jdbc.children.wrt.password"));
+        me.add(c3p0Plugin);
+        ActiveRecordPlugin arp = new ActiveRecordPlugin(c3p0Plugin);
+        me.add(arp);
+
+        //
+        arp.addMapping("child_info", ChildrenModel.class);
+    }
+
+    /**
+     * @param me
+     * @see com.jfinal.config.JFinalConfig#configInterceptor(com.jfinal.config.Interceptors)
+     */
+    @Override
+    public void configInterceptor(Interceptors me) {
+    }
+
+    /**
+     * @param me
+     * @see com.jfinal.config.JFinalConfig#configHandler(com.jfinal.config.Handlers)
+     */
+    @Override
+    public void configHandler(Handlers me) {
+    }
+
 }

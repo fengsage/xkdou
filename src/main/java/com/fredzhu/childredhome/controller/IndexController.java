@@ -29,15 +29,15 @@ import com.jfinal.core.Controller;
  *
  */
 public class IndexController extends Controller {
-	
-	@ActionKey("/")
-	public void index() {
-		renderVelocity("index.html");
-	}
-	
-	@ActionKey("/404")
-	public void _404() {
-		renderVelocity("404.html");
-	}
-	
+
+    @ActionKey("/")
+    public void index() {
+        renderVelocity("index.html");
+    }
+
+    @ActionKey("/404")
+    public void _404() {
+        renderVelocity("404.html");
+    }
+
 }

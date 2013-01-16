@@ -1,0 +1,8 @@
+	<div class="navbar-inner">
+		<a class="brand" href="#">小蝌蚪后台管理</a>
+		<ul class="nav">
+			<li class="active"><a href="/admin/children">小蝌蚪</a></li>
+			<li><a href="/admin/batch">批量采集</a></li>
+			<li><a href="#">系统设置</a></li>
+		</ul>
+	</div>

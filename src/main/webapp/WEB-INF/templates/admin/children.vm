@@ -1,19 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>小蝌蚪后台管理</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="">
-<meta name="author" content="">
-<link rel="stylesheet" type="text/css" href="/easyui/themes/gray/easyui.css"></link>
-<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css"></link>
-<link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
-<script type="text/javascript" src="/js/jquery.min.js"></script>
-<script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="/easyui/locale/easyui-lang-zh_CN.js"></script>
-<script type="text/javascript" src="/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
 	$(function() {
 		$('#datagrid').datagrid({  
@@ -28,12 +12,19 @@
 		    	},'-',
 		    	{
 		    		text: '批量显示',
+		    		iconCls: 'icon-ok',
 		    		handler: function(){show(true);}	
 		    	},
 		    	{
 		    		text: '批量不显示',
+		    		iconCls: 'icon-no',
 		    		handler: function(){show(false);}	
-		    	} 
+		    	},"-",
+		    	{
+		    		text: '批量刷新',
+		    		iconCls: 'icon-reload',
+		    		handler: function(){refreshAll();}
+		    	},"-"
 		    ],
 		    columns:[[  
 		        {field:'realname',title:'真实姓名',width:150}, 
@@ -75,8 +66,8 @@
 		        },
 		       {field:'action',title:'操作',width:50,align:'center',
 		        	formatter:function(value,row,index){
-		        		var a = "<a href='javascript:edit()'>编辑</a> ";
-		        		var b = "<a href='javascript:del()'>删除</a> ";
+		        		var a = "<a href='javascript:del();'>删除</a> ";
+		        		var b = "<a href='javascript:refresh();'>刷新</a> ";
 		        		return a + " " + b;
 		        	}
 		        },
@@ -84,9 +75,12 @@
 		    ]],
 			pagination:true,
 			rownumbers:true,
-			pageSize:20
+			pageSize:10,
+			onDblClickRow:function(rowIndex, rowData){
+				edit(rowData);
+			}
 		});  
-
+		
 		$("#ss").appendTo('.datagrid-toolbar');
 		$('#ss').searchbox({  
 		    searcher:function(value,name){  
@@ -100,19 +94,63 @@
 		
 	});
 	
+	function refresh(){
+		var row = $('#datagrid').datagrid('getSelected');
+		if(row){
+			$('#datagrid').datagrid('loading');
+			$.ajax({
+				type: "POST",
+				url: "childRefresh?ids="+row.id,
+				dataType : "json",
+				success: function(result){
+					$('#datagrid').datagrid('loaded');
+					if (result.result == "success"){
+						$('#datagrid').datagrid('reload');
+					}else{
+						$.messager.show({
+							title: '出错啦!',
+							msg: result.message
+						});
+					}
+				}
+			});		
+		}
+	}
+	
+	function refreshAll(){
+		var ids = getSelectIds();
+		if(ids == ""){
+			$.messager.alert("警告","请选择批量处理的项目");
+			return false;
+		}
+
+		$('#datagrid').datagrid('loading');
+		$.ajax({
+			type: "POST",
+			url: "childRefresh?ids="+ids,
+			dataType : "json",
+			success: function(result){
+				$('#datagrid').datagrid('loaded');
+				if (result.result == "success"){
+					$('#datagrid').datagrid('reload');
+				}else{
+					$.messager.show({
+						title: '出错啦!',
+						msg: result.message
+					});
+				}
+			}
+		});
+	}
+	
 	function add(){
 		$('#dialog').dialog('open').dialog('setTitle','添加小蝌蚪');
 		$('#fm').form('clear');
 	}
 	
-	function edit() {
-		var row = $('#datagrid').datagrid('getSelected');
-		if (row){
-	    	$('#dialog').dialog('open').dialog('setTitle','修改小蝌蚪');
-			$('#fm').form('load',row);
-		}else{
-			$.messager.alert('警告', '请先选择编辑的选项');
-		}
+	function edit(row) {
+	    $('#dialog').dialog('open').dialog('setTitle','修改小蝌蚪');
+		$('#fm').form('load',row);
 	}
 	
 	function del() {
@@ -133,7 +171,8 @@
 		});
 	}
 	
-	function show(is_show){
+	
+	function getSelectIds(){
 		var selected = $('#datagrid').datagrid('getSelections');
 		var ids = "";
 		$.each(selected,function(i,n){
@@ -142,16 +181,23 @@
 			}
 			ids += n.id;
 		})
+		return ids;
+	}
+	
+	function show(is_show){
+		var ids = getSelectIds();
 		if(ids == ""){
 			$.messager.alert("警告","请选择批量处理的项目");
 			return false;
 		}
+		$('#datagrid').datagrid('loading');
 		$.ajax({
 			type: "POST",
 			url: "childShow",
 			data : "ids="+ids+"&is_show="+is_show,
 			dataType : "json",
 			success: function(result){
+				$('#datagrid').datagrid('reload');
 				if (result.result == "success"){
 					$('#datagrid').datagrid('reload');
 				}else{
@@ -192,30 +238,14 @@
 	}
 	
 </script>
-<!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-</head>
-<body>
-	<div class="navbar">
-		<div class="navbar-inner">
-			<a class="brand" href="#">小蝌蚪后台管理</a>
-			<ul class="nav">
-				<li class="active"><a href="#">小蝌蚪</a></li>
-				<li><a href="#">系统设置</a></li>
-				<li><a href="#">JOB</a></li>
-			</ul>
-		</div>
-		<table id="datagrid"></table>
-		<!-- 搜索 -->
-		<input id="ss"></input>  
-		<div id="mm" style="width:120px">  
-		    <div data-options="name:'realname'">真实姓名</div>  
-		</div>  
 
-	</div>
-	
-	
+<table id="datagrid"></table>
+<!-- 搜索 -->
+<input id="ss"></input>  
+<div id="mm" style="width:120px">  
+	<div data-options="name:'realname'">真实姓名</div>  
+</div>  
+
 <!-- 新增/编辑 -->
 <div id="dialog" class="easyui-dialog" style="width:600px;height:500px;padding:20px;" closed="true" buttons="#dlg-buttons">
 	<form id="fm" method="post" novalidate action="#">
@@ -233,11 +263,11 @@
 		</div>
 		<div class="fitem">
 			<label>照片</label>
-			<input id="pic" name="pic" class="easyui-validatebox txt_fm_mmp" required="true"></input>
+			<input id="pic" name="pic" class="easyui-validatebox txt_fm_mmp" required="true" validType="url"></input>
 		</div>
 		<div class="fitem">
 			<label>出生年月</label>
-			<input id="birthday" name="birthday" class="easyui-validatebox txt_fm_mmp" required="true" onClick="WdatePicker()"> </input>
+			<input id="birthday" name="birthday" class="easyui-validatebox txt_fm_mmp"  onClick="WdatePicker()"> </input>
 		</div>
 		<div class="fitem">
 			<label>丢失时间</label>
@@ -273,6 +303,3 @@
 	<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dialog').dialog('close')">取消</a>
 </div>
 
-
-</body>
-</html>
