@@ -30,7 +30,7 @@ import com.jfinal.core.Controller;
  */
 public class IndexController extends Controller {
 
-    @ActionKey("/")
+    @ActionKey("/index")
     public void index() {
         renderVelocity("index.html");
     }
