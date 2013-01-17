@@ -4,7 +4,7 @@ create database db_xkdou;
 
 use db_xkdou;
 
-CREATE TABLE IF NOT EXISTS `child_info` (
+CREATE TABLE IF NOT EXISTS `xkd_child_info` (
   `id` INT unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `realname` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '真实姓名',
   `pic` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '真实照片',
