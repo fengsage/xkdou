@@ -113,6 +113,7 @@
 		<profile>
 			<id>test</id>
 			<properties>
+				<dev.mode>false</dev.mode>
 				<prop.jdbc.children.wrt.driver>com.mysql.jdbc.Driver</prop.jdbc.children.wrt.driver>
 				<prop.jdbc.children.wrt.url>jdbc:mysql://127.0.0.1/db_xkdou?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull</prop.jdbc.children.wrt.url>
 				<prop.jdbc.children.wrt.username>root</prop.jdbc.children.wrt.username>
@@ -123,6 +124,7 @@
 		<profile>
 			<id>kuci</id>
 			<properties>
+				<dev.mode>false</dev.mode>
 				<prop.jdbc.children.wrt.driver>com.mysql.jdbc.Driver</prop.jdbc.children.wrt.driver>
 				<prop.jdbc.children.wrt.url>jdbc:mysql://127.0.0.1/db_xkdou?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull</prop.jdbc.children.wrt.url>
 				<prop.jdbc.children.wrt.username>root</prop.jdbc.children.wrt.username>
@@ -132,6 +134,7 @@
 		<profile>
 			<id>prd</id>
 			<properties>
+				<dev.mode>true</dev.mode>
 				<prop.jdbc.children.wrt.driver>com.mysql.jdbc.Driver</prop.jdbc.children.wrt.driver>
 				<prop.jdbc.children.wrt.url>jdbc:mysql://localhost/db_xkdou?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull</prop.jdbc.children.wrt.url>
 				<prop.jdbc.children.wrt.username>db_xkdou</prop.jdbc.children.wrt.username>

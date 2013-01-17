@@ -28,7 +28,22 @@
 		<ul class="nav">
 			<li #if($!menu == "children")class="active"#end><a href="/admin/children">小蝌蚪</a></li>
 			<li #if($!menu == "batch")class="active"#end><a href="/admin/batch">批量采集</a></li>
-			<li #if($!menu == "setting")class="active"#end><a href="#">系统设置</a></li>
+            <li class="dropdown-submenu #if($!menu == 'auth')active#end">
+                <a tabindex="-1" href="">权限设置</a>
+                <ul class="dropdown-menu">
+            		<li #if($!child_menu == "users")class="active"#end><a href="/admin/auth/users">用户管理</a></li>
+            		<li #if($!child_menu == "roles")class="active"#end><a href="/admin/auth/roles">角色管理</a></li>
+            		<li #if($!child_menu == "perms")class="active"#end><a href="/admin/auth/perms">权限管理</a></li>
+                </ul>
+            </li>
+            <li class="dropdown-submenu #if($!menu == 'setting')active#end">
+                <a tabindex="-1" href="">系统设置</a>
+                <ul class="dropdown-menu">
+            		<li #if($!child_menu == "logs")class="active"#end><a href="/admin/system/logs">日志管理</a></li>
+					<li class="divider"></li>
+					<li><a href="/admin/logout">登出</a></li>
+                </ul>
+            </li>
 		</ul>
 	</div>
 	$screen_content

@@ -2,7 +2,7 @@
  * 
  * Copyright (c) 2012 All Rights Reserved.
  */
-package com.fredzhu.childredhome.controller;
+package com.fredzhu.childredhome.controller.admin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,11 +10,14 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import com.fredzhu.childredhome.controller.BaseController;
+import com.fredzhu.childredhome.core.PermissionChecker;
 import com.fredzhu.childredhome.core.PermissionOwn;
 import com.fredzhu.childredhome.core.VelocityLayoutRender;
 import com.fredzhu.childredhome.entity.Children;
 import com.fredzhu.childredhome.entity.InfoFromEnum;
 import com.fredzhu.childredhome.model.ChildrenModel;
+import com.fredzhu.childredhome.model.PermissionModel;
 import com.fredzhu.childredhome.util.DateUtil;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
@@ -22,7 +25,7 @@ import com.jfinal.plugin.activerecord.Record;
 
 /**
  *                       
- * @Filename: AdminController.java
+ * @Filename: ChildrenController.java
  *
  * @Description: 
  *
@@ -41,18 +44,63 @@ import com.jfinal.plugin.activerecord.Record;
  *
  */
 @PermissionOwn(name = "权限管理")
-public class AdminController extends BaseController {
+public class ChildrenController extends BaseController {
 
-    private static final Logger LOG   = Logger.getLogger(AdminController.class);
+    private static final Logger LOG             = Logger.getLogger(ChildrenController.class);
 
-    private ChildrenModel       model = new ChildrenModel();
+    private ChildrenModel       childrenModel   = new ChildrenModel();
+    private PermissionModel     permissionModel = new PermissionModel();
 
     public void login() {
+        setAttr("redirect", getPara("redirect"));
         renderVelocity("login.vm");
     }
 
     public void loginSubmit() {
+        String username = getPara("username");
+        String password = getPara("password");
+        String redirect = getPara("redirect");
 
+        try {
+            if (StringUtils.isEmpty(username)) {
+                throw new RuntimeException("用户名不能为空");
+            }
+            if (StringUtils.isEmpty(password)) {
+                throw new RuntimeException("密码不能为空");
+            }
+            //登录检测
+            Record userRecord = Db.findFirst(
+                "select * from xkd_auth_user where username = ? and password = ?", username,
+                encryptPassword(password));
+
+            if (userRecord == null) {
+                throw new RuntimeException("用户名/密码输入错误");
+            }
+
+            setSessionAttr(PermissionChecker.ADMIN_ID, userRecord.get("id"));
+            setSessionAttr(PermissionChecker.ADMIN_USERNAME, username);
+            setSessionAttr(PermissionChecker.ADMIN_ROLES, userRecord.get("role_ids"));
+
+            //保存权限
+            setSessionAttr(PermissionChecker.ADMIN_PERMISSION,
+                permissionModel.loadUserPermissions(userRecord.getLong("id")));
+
+            if (!StringUtils.isEmpty(redirect)) {
+                redirect(redirect);
+            } else {
+                redirect("/admin/index");
+            }
+
+        } catch (Exception e) {
+            setAttr("error", e.getMessage());
+            renderVelocity("login.vm");
+        }
+    }
+
+    public void logout() {
+        getSession().setAttribute(PermissionChecker.ADMIN_ID, null);
+        getSession().setAttribute(PermissionChecker.ADMIN_USERNAME, null);
+        redirect("/admin/login");
     }
 
     @PermissionOwn(name = "后台首页")
@@ -60,7 +108,7 @@ public class AdminController extends BaseController {
         redirect("/admin/children");
     }
 
-    @PermissionOwn(name = "小蝌蚪管理页面")
+    @PermissionOwn(name = "小蝌蚪管理页面", isMenu = true)
     public void children() {
         setAttr(MENU, "children");
         render(new VelocityLayoutRender("children.vm"));
@@ -72,12 +120,13 @@ public class AdminController extends BaseController {
         int rows = getParaToInt("rows", SIZE);
 
         String realname = getPara("realname", null);
-        String whereSql = " where 1=1 ";
+        String whereSql = " where is_del = 0 ";
         if (realname != null) {
             whereSql += " and realname like '%" + realname + "%'";
         }
-        Page<Record> page = Db.paginate(pageNum, rows, "select *", "from child_info " + whereSql
-                                                                   + " order by id desc");
+        Page<Record> page = Db
+            .paginate(pageNum, rows, "select *", "from xkd_child_info " + whereSql
+                                                 + " order by id desc");
         setAttrs(buildPagination(page.getList(), page.getTotalRow()));
         renderJson();
     }
@@ -86,7 +135,7 @@ public class AdminController extends BaseController {
     public void childUpdate() {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-            Db.update("child_info", initChildRecord());
+            Db.update("xkd_child_info", initChildRecord());
             map.put(RESULT, RESULT_SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,7 +151,7 @@ public class AdminController extends BaseController {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             int id = getParaToInt("id");
-            Db.deleteById("child_info", id);
+            Db.update("xkd_child_info", "id", new Record().set("id", id).set("is_del", 1));
             map.put(RESULT, RESULT_SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
@@ -121,7 +170,7 @@ public class AdminController extends BaseController {
             String data = getPara("data");
             String value = getPara("value");
             for (String id : ids.split(",")) {
-                Db.update("child_info", new Record().set("id", id).set(data, value));
+                Db.update("xkd_child_info", new Record().set("id", id).set(data, value));
             }
             map.put(RESULT, RESULT_SUCCESS);
         } catch (Exception e) {
@@ -143,13 +192,13 @@ public class AdminController extends BaseController {
             }
 
             for (String id : ids.split(",")) {
-                Record record = Db.findFirst("select * from child_info where id = ?", id);
+                Record record = Db.findFirst("select * from xkd_child_info where id = ?", id);
                 if (record == null) {
                     throw new RuntimeException("原始数据不存在,id=" + id);
                 }
                 //TODO 不是所有的都可以重新采集 
                 InfoFromEnum from = InfoFromEnum.getByCode(record.getStr("info_from"));
-                Children children = model.parseChildren(record.getStr("info_from_url"));
+                Children children = childrenModel.parseChildren(record.getStr("info_from_url"));
                 if (children == null) {
                     throw new RuntimeException("重新采集数据失败,id=" + id + ",数据来源=" + from);
                 }
@@ -165,7 +214,7 @@ public class AdminController extends BaseController {
         renderJson(map);
     }
 
-    @PermissionOwn(name = "批处理页面")
+    @PermissionOwn(name = "批处理页面", isMenu = true)
     public void batch() {
         setAttr(MENU, "batch");
         render(new VelocityLayoutRender("batch.vm"));
@@ -174,12 +223,12 @@ public class AdminController extends BaseController {
     @PermissionOwn(name = "批处理单URL")
     public void batchParseUrl() {
         final String urls = getPara("urls");
-        if (StringUtils.isEmpty(urls)) {
+        if (!StringUtils.isEmpty(urls)) {
             new Thread(new Runnable() {
                 public void run() {
                     for (String url : urls.split("\\n")) {
                         try {
-                            model.parseChildren(url);
+                            childrenModel.parseChildren(url);
                         } catch (Exception e) {
                             LOG.error("", e);
                         }
@@ -193,12 +242,12 @@ public class AdminController extends BaseController {
     @PermissionOwn(name = "批处理列表URL")
     public void batchParseListUrl() {
         final String urls = getPara("urls");
-        if (StringUtils.isEmpty(urls)) {
+        if (!StringUtils.isEmpty(urls)) {
             new Thread(new Runnable() {
                 public void run() {
                     for (String url : urls.split("\\n")) {
                         try {
-                            model.parseChildrenList(url);
+                            childrenModel.parseChildrenList(url);
                         } catch (Exception e) {
                             LOG.error("", e);
                         }
@@ -221,6 +270,7 @@ public class AdminController extends BaseController {
         String height = getPara("height");
         String lostTime = getPara("lost_time");
         String birthday = getPara("birthday");
+        String type = getPara("type");
 
         int isShow = getParaToInt("is_show");
         int sex = getParaToInt("sex");
@@ -237,6 +287,7 @@ public class AdminController extends BaseController {
         record.set("sex", sex);
         record.set("is_finded", isFinded);
         record.set("height", height);
+        record.set("type", type);
         record.set("lost_time", DateUtil.parseDate4UrlCreateTime(lostTime));
         record.set("birthday", DateUtil.parseDateYYYYMMDD(birthday));
         return record;

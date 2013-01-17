@@ -1,0 +1,157 @@
+<script type="text/javascript">
+$(document).ready(function(){
+	
+	var _toolbar = [
+		{
+			id:'btnAddPermision',
+			text:'添加权限',
+			iconCls:'icon-add',
+			handler:function(){
+				addPermision();
+			}
+		}
+	];
+	$('#datagrid').treegrid({  
+		title:'权限管理',
+	    url:'permsData',  
+	    toolbar:_toolbar,
+	    idField:'id',  
+	    treeField:'name',
+		fitColumns:true,
+	    columns:[[  
+	        {field:'id',title:'ID',width:50,align:'center'},  
+	        {field:'name',title:'名称',width:200}, 
+	        {field:'alias',title:'别名',width:100}, 
+	        {field:'permission',title:'权限',width:200}, 
+	        {field:'isMenu',title:'菜单',width:50,align:'center',
+	        	formatter:function(value,row,index){
+	        		var a = '<img src="/images/ico_status_1.gif"/>';
+		        	if(value == 0)
+		        	{
+		        		a = '<img src="/images/ico_status_0.gif"/>';
+		        	}
+	        		return a;
+	        	}
+	        }, 
+	        {field:'addTime',title:'创建时间',width:130,align:'center'}, 	 
+	        {field:'action',title:'操作',width:150,align:'center',
+	        	formatter:function(value,row,index){
+	        		var a = "<a href='javascript:editPerm()'>编辑</a> ";
+	        		var b = "<a href='javascript:delPerm("+row.id+")'>删除</a> ";
+	        		return a + " " + b;
+	        	}
+	        }
+	    ]],
+		singleSelect:true,
+		onDblClickRow:function(){
+			editPerm();
+		}
+	});  
+    
+	
+});
+
+function addPermision(){
+	$('#dialog').dialog('open').dialog('setTitle','新增权限');
+	$('#fm').form('clear');
+}
+
+function editPerm(){
+	var row = $('#datagrid').treegrid('getSelected');
+	if (row){
+    	$('#dialog').dialog('open').dialog('setTitle','修改权限');
+		$('#fm').form('load',row);
+	}else{
+		$.messager.alert('警告', '请先选择编辑的选项');
+	}
+}
+
+function delPerm(id){
+	$.messager.confirm('删除权限','你确定要删除这个权限吗?',function(r){
+	    if (r){  
+			$.getJSON('permDel',{'id':id},function(data){
+				if(data.result=="success"){
+					$('#datagrid').treegrid('reload');
+				}else{
+	        		$.messager.show({
+	        			title: '出错啦!',
+	        			msg: data.message
+	        		});
+				}
+			});
+	    }  
+	});
+}
+
+
+/**
+ * 创建/更新会员信息
+ */
+function post(){
+	var submit_url = "permUpdate";
+	//提交表单
+	$('#fm').form('submit',{
+		url: submit_url,
+		onSubmit: function(){
+			return $(this).form('validate');
+		},
+		success: function(result){
+			var result = eval('('+result+')');
+			if (result.result == "success"){
+				$('#datagrid').treegrid('reload');
+				$('#dialog').dialog('close');
+			}else{
+				jQuery.messager.show({
+					title: '出错啦!',
+					msg: result.message
+				});
+			}
+		}
+	});
+}
+
+</script>
+
+<table id="datagrid"></table>
+
+<!-- 新增/编辑 -->
+<div id="dialog" class="easyui-dialog" style="width:600px;height:400px;padding:20px;" closed="true" buttons="#dlg-buttons">
+	<form id="fm" method="post" novalidate action="#">
+	    <input type="hidden" name="id"/>
+		<div class="fitem">
+			<label>名称</label>
+			<input id="name" name="name" class="easyui-validatebox txt_fm_mmp" required="true"> 
+		</div>
+		<div class="fitem">
+			<label>别名</label>
+			<input id="alias" name="alias" class="easyui-validatebox txt_fm_mmp" required="true"> 
+		</div>
+		<div class="fitem">
+			<label>上层权限</label>
+			<select id="sel_first_perms" name="parentId"  class="easyui-combobox easyui-validatebox" required="true">
+				<option value="0"> --- 根权限 --- </option>
+				#foreach($item in $!firstPerms)
+				<option value="$item.id">$item.name</option>
+				#end
+			</select>
+		</div>		
+		<div class="fitem">
+			<label>权限</label>
+			<input id="permission" name="permission" class="easyui-validatebox txt_fm_mmp_long"> 
+		</div>	
+		<div class="fitem">
+			<label>是否菜单</label>
+			<select id="sel_is_menu" name="isMenu" class="easyui-combobox  easyui-validatebox" required="true">
+				<option value="1">是</option>
+				<option value="0">不是</option>
+			</select>
+		</div>
+	</form>
+</div>
+<div id="dlg-buttons">
+	<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-ok" onclick="post()">提交</a>
+	<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dialog').dialog('close')">取消</a>
+</div>
+
+
+

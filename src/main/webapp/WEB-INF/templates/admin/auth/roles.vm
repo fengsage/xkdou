@@ -1,0 +1,164 @@
+<style>
+.perms ul li {list-style: none; float: left;width: 130px;}
+.perms lable {height:20px;line-height: 20px;}
+</style>
+<script type="text/javascript">
+$(document).ready(function(){
+	
+	var _toolbar = [
+		{
+			id:'btnAddRole',
+			text:'添加角色',
+			iconCls:'icon-add',
+			handler:function(){
+				addRole();
+			}
+		}
+	];
+	$('#datagrid').datagrid({  
+		title:'角色管理',
+	    url:'rolesData',  
+	    toolbar:_toolbar,
+		fitColumns:true,
+	    columns:[[  
+	        {field:'id',title:'ID',width:50,align:'center'},  
+	        {field:'name',title:'名称',width:150}, 
+	        {field:'add_time',title:'创建时间',width:130,align:'center'}, 	 
+	        {field:'action',title:'操作',width:150,align:'center',
+	        	formatter:function(value,row,index){
+	        		var a = "<a href='javascript:editRole()'>编辑</a> ";
+	        		var b = "<a href='javascript:delRole("+row.id+")'>删除</a> ";
+	        		return a + " " + b;
+	        	}
+	        }
+	    ]],
+		pagination:true,
+		rownumbers:true,
+		pageSize:30,
+		singleSelect:true,
+		onDblClickRow:function(){
+			editRole();
+		}
+	});  
+    
+	$(".s_all").click(function(){
+		var checked = false;
+		if($(this).text() == "全选"){
+			$(this).text("反选");
+			checked = true;
+		}else{
+			$(this).text("全选");
+			checked = false;
+		}
+		$("input[name=perm_ids]").each(function(){
+			$(this).attr("checked",checked);
+		});
+	});
+	
+});
+
+function addRole(){
+	$('#dialog').dialog('open').dialog('setTitle','新增用户角色');
+	$('#fm').form('clear');
+}
+
+function editRole(){
+	var row = $('#datagrid').datagrid('getSelected');
+	if (row){
+    	$('#dialog').dialog('open').dialog('setTitle','修改用户角色');
+    	$('#fm').form('clear');
+		$('#fm').form('load',row);
+		var permissionIds = row.permissions_ids;
+		if(permissionIds!=null && permissionIds!=""){
+			$.each(permissionIds.split(","),function(i,n){
+				$("input[name=perm_ids][value="+n+"]").each(function(){
+					$(this).attr("checked",true);
+				});
+			});	
+		}
+		
+	}else{
+		$.messager.alert('警告', '请先选择编辑的选项');
+	}
+}
+
+function delRole(id){
+	$.messager.confirm('删除角色','你确定要删除这个角色吗?',function(r){
+	    if (r){  
+			$.getJSON('roleDel',{'id':id},function(data){
+				if(data.result=="success"){
+					$('#datagrid').datagrid('reload');
+				}else{
+	        		$.messager.show({
+	        			title: '出错啦!',
+	        			msg: data.message
+	        		});
+				}
+			});
+	    }  
+	});
+}
+
+/**
+ * 创建/更新会员信息
+ */
+function post(){
+	var submit_url = "roleUpdate";
+	//提交表单
+	$('#fm').form('submit',{
+		url: submit_url,
+		onSubmit: function(){
+			return $(this).form('validate');
+		},
+		success: function(result){
+			var result = eval('('+result+')');
+			if (result.result == "success"){
+				$('#datagrid').datagrid('reload');
+				$('#dialog').dialog('close');
+			}else{
+				jQuery.messager.show({
+					title: '出错啦!',
+					msg: result.message
+				});
+			}
+		}
+	});
+}
+
+</script>
+
+<table id="datagrid"></table>
+
+<!-- 新增/编辑 -->
+<div id="dialog" class="easyui-dialog" style="width:600px;height:600px;padding:20px;" closed="true" buttons="#dlg-buttons">
+	<form id="fm" method="post" novalidate action="#">
+	    <input type="hidden" name="id"/>
+		<div class="fitem">
+			<label>名称</label>
+			<input id="name" name="name" class="easyui-validatebox txt_fm_mmp" required="true"> 
+		</div>
+
+		<div class="fitem perms" style="margin-top:10px;">
+			<div id="p1" class="easyui-panel" title="选择权限 <a class='s_all' style='color:red;' href='javascript:void(0);'>全选</a>" style="width:530px;padding:10px;height: 435px;" collapsible="false" minimizable="false" maximizable="false">
+			#foreach($p1 in $!firstPerms)
+			<lable>$p1.name</lable>
+			<ul>
+				#foreach($p2 in $!p1.children)
+				<li>
+					<input type="checkbox" name="perm_ids" value="$p2.id"/> $p2.name
+				</li>
+				#end
+			</ul>
+			<div style="clear:both;"></div>
+			#end
+			</div>
+		</div>
+	</form>
+</div>
+<div id="dlg-buttons">
+	<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-ok" onclick="post()">提交</a>
+	<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dialog').dialog('close')">取消</a>
+</div>
+
+
+

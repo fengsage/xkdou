@@ -51,7 +51,7 @@ public class ChildrenModel extends Model<ChildrenModel> {
 
         List<ChildrenModel> records = dao
             .find(
-                "select * from child_info where pic!='' and is_show = 1 and is_del = 0 and is_finded = 0 order by rand() limit ?",
+                "select * from xkd_child_info where pic!='' and is_show = 1 and is_del = 0 and is_finded = 0 order by rand() limit ?",
                 size <= 10 ? size : 10);
         for (ChildrenModel record : records) {
             Children children = new Children();
@@ -83,7 +83,7 @@ public class ChildrenModel extends Model<ChildrenModel> {
             throw new RuntimeException("解析失败!");
 
         ChildrenModel record = dao.findFirst(
-            "select * from child_info where info_from = ? and info_from_no = ?", children
+            "select * from xkd_child_info where info_from = ? and info_from_no = ?", children
                 .getInfoFrom().code(), children.getInfoFromNo());
 
         //暂时不考虑更新
@@ -108,7 +108,7 @@ public class ChildrenModel extends Model<ChildrenModel> {
 
     public long getChildCount() {
         ChildrenModel record = dao
-            .findFirst("select count(*) as count from child_info where is_del = 0 and and is_finded = 0");
+            .findFirst("select count(*) as count from xkd_child_info where is_del = 0 and and is_finded = 0");
         if (record != null) {
             return record.getLong("count");
         }

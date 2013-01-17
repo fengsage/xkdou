@@ -3,12 +3,19 @@
  */
 package com.fredzhu.childredhome.core;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
+import com.fredzhu.childredhome.util.PropertiesHelp;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.core.ActionInvocation;
+import com.jfinal.plugin.activerecord.Record;
 
 /**
  *                       
@@ -39,15 +46,22 @@ public class PermissionChecker implements Interceptor {
 
     public static final String    ADMIN_PERMISSION    = "ADMIN_PERMISSION";
 
+    private static final String   DEV_MODE            = PropertiesHelp.getProperty("dev.mode");
+
     /**免权限URL*/
     private static final String[] NOT_NEED_CHECK_URLS = new String[] { "/admin/login",
             "/admin/loginSubmit", "/admin/logout"    };
 
+    @SuppressWarnings("unchecked")
     public void intercept(ActionInvocation me) {
 
-        String requestUrl = me.getActionKey();
+        if (!Boolean.parseBoolean(DEV_MODE)) {
+            me.invoke();
+            return;
+        }
 
         //不用验证权限的
+        String requestUrl = me.getActionKey();
         if (!requestUrl.startsWith("/admin")) {
             me.invoke();//允许登录
         }
@@ -66,6 +80,30 @@ public class PermissionChecker implements Interceptor {
             me.getController().redirect("/admin/login?redirect=" + requestUrl);
             return;
         }
+
+        //没有验证管理员可用性,暂时不需要
+        List<Record> records = ((List<Record>) session.getAttribute(ADMIN_PERMISSION));
+        if (records != null && records.size() > 0) {
+            for (Record record : records) {
+                String permission = record.getStr("permission");
+                if (requestUrl.equals(permission.trim())) {
+                    me.invoke();//允许登录
+                    return;
+                }
+            }
+        }
+        try {
+            LOG.info("用户权限不够,不能进入:" + requestUrl + ",IP:" + ip);
+            HttpServletResponse response = me.getController().getResponse();
+            response.setContentType("text/html; charset=utf-8");
+            PrintWriter writer = response.getWriter();
+            writer.write("对不起,您没有权限做此项操作!");
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            LOG.error("", e);
+        }
+
         me.invoke();//允许登录
     }
 }

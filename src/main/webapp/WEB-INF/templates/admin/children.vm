@@ -3,6 +3,7 @@
 		$('#datagrid').datagrid({  
 			title:'小蝌蚪管理',
 		    url:'childrenList',  
+			fitColumns:true,
 		    toolbar :[
 		    	{
 		    		text: '显示',
@@ -50,6 +51,23 @@
 		        		}
 		        	}
 		        }, 
+			   {field:'type',title:'类型',width:80,align:'center',
+		        	formatter:function(value,row,index){
+						if(value==0){
+							return "默认";
+						}else if(value==1){
+							return "家寻找宝贝";
+						}else if(value==2){
+							return "寻家宝贝";
+						}else if(value==3){
+							return "流浪乞讨";
+						}else if(value==4){
+							return "其他寻人";
+						}else if(value==5){
+							return "海外寻人";
+						}
+		        	}
+			   },
 		       {field:'birthday',title:'出生年月',width:100,align:'center'},
 		       {field:'lost_time',title:'丢失时间',width:130,align:'center'},
 		       {field:'height',title:'身高',width:100,align:'center'},
@@ -81,7 +99,7 @@
 			   {field:'create_time',title:'收录时间',width:130,align:'center'},
 		       {field:'action',title:'操作',width:100,align:'center',
 		        	formatter:function(value,row,index){
-		        		var a = "<a href='javascript:del();'>删除</a> ";
+		        		var a = "<a href='javascript:del();' style='color:red;'>删除</a> ";
 		        		var b = "<a href='javascript:refresh();'>刷新</a> ";
 		        		return a + " " + b;
 		        	}
@@ -281,7 +299,7 @@
 			</div>
 			<div class="fitem">
 				<label>照片</label>
-				<input id="pic" name="pic" class="easyui-validatebox txt_fm_mmp" required="true" validType="url"></input>
+				<input id="pic" name="pic" class="easyui-validatebox txt_fm_mmp" validType="url"></input>
 			</div>
 			<div class="fitem">
 				<label>丢失时间</label>
@@ -313,11 +331,28 @@
 			</div>
 	  </div>
 	</div>
+	
+	  <div class="row-fluid">
+	  	<div class="span12">
+	  		<div class="fitem">
+				<label>类型</label>
+				<select id="sel_type" name="type" class="easyui-combobox  easyui-validatebox" required="true">
+					<option value="0">默认</option>
+                    <option value="1">家寻找宝贝</option>
+                    <option value="2">寻家宝贝</option>
+                    <option value="3">流浪乞讨</option>
+                    <option value="4">其他寻人</option>
+                    <option value="5">海外寻人</option>
+				</select>
+			</div>
+	  	</div>
+	  </div>
+	  
 	  <div class="row-fluid">
 	  	<div class="span12">
 			<div class="fitem">
 				<label>丢失地点</label>
-				<input id="lost_addr" name="lost_addr" class="easyui-validatebox txt_fm_mmp" required="true"> </input>
+				<input id="lost_addr" name="lost_addr" class="easyui-validatebox txt_fm_mmp" required="true" style="width:500px;"> </input>
 			</div>
 			<div class="fitem">
 				<label>特征</label>
@@ -325,10 +360,12 @@
 			</div>
 			<div class="fitem">
 				<label>备注</label>
-				<textarea id="remark" name="remark" class="easyui-validatebox txt_fm_mmp" required="true" rows="" cols="60"></textarea>
+				<textarea id="remark" name="remark" class="easyui-validatebox txt_fm_mmp" rows="" cols="60"></textarea>
 			</div>
 	  	</div>
 	  </div>
+
+
 	</form>
 </div>
 <div id="dlg-buttons">

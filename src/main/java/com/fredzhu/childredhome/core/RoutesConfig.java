@@ -4,9 +4,11 @@
  */
 package com.fredzhu.childredhome.core;
 
-import com.fredzhu.childredhome.controller.AdminController;
 import com.fredzhu.childredhome.controller.ApiController;
 import com.fredzhu.childredhome.controller.IndexController;
+import com.fredzhu.childredhome.controller.admin.AuthController;
+import com.fredzhu.childredhome.controller.admin.ChildrenController;
+import com.fredzhu.childredhome.controller.admin.SystemController;
 import com.jfinal.config.Routes;
 
 /**
@@ -34,7 +36,9 @@ public class RoutesConfig {
     public void configRoute(Routes me) {
         me.add("/", IndexController.class, CoreConfig.TEMPATE_PATH);
         me.add("/api", ApiController.class, CoreConfig.TEMPATE_PATH + "/api");
-        me.add("/admin", AdminController.class, CoreConfig.TEMPATE_PATH + "/admin");
+        me.add("/admin", ChildrenController.class, CoreConfig.TEMPATE_PATH + "/admin");
+        me.add("/admin/auth", AuthController.class, CoreConfig.TEMPATE_PATH + "/admin/auth");
+        me.add("/admin/system", SystemController.class, CoreConfig.TEMPATE_PATH + "/admin/system");
     }
 
 }

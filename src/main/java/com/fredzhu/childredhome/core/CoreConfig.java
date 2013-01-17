@@ -38,7 +38,9 @@ import com.jfinal.render.ViewType;
 public class CoreConfig extends JFinalConfig {
 
     /**模板地址*/
-    public static final String TEMPATE_PATH = "/WEB-INF/templates";
+    public static final String  TEMPATE_PATH = "/WEB-INF/templates";
+
+    private static final String DEV_MODE     = PropertiesHelp.getProperty("dev.mode");
 
     /**
      * @param me
@@ -46,7 +48,9 @@ public class CoreConfig extends JFinalConfig {
      */
     @Override
     public void configConstant(Constants me) {
-        me.setDevMode(true);
+        if (!Boolean.parseBoolean(DEV_MODE)) {
+            me.setDevMode(true);
+        }
         me.setViewType(ViewType.VELOCITY);
         me.setError404View(TEMPATE_PATH + "/404.html");
     }
@@ -75,7 +79,7 @@ public class CoreConfig extends JFinalConfig {
         me.add(arp);
 
         //
-        arp.addMapping("child_info", ChildrenModel.class);
+        arp.addMapping("xkd_child_info", ChildrenModel.class);
     }
 
     /**
@@ -85,7 +89,7 @@ public class CoreConfig extends JFinalConfig {
     @Override
     public void configInterceptor(Interceptors me) {
         me.add(new PermissionBuild());//用于首次访问构建权限,此接口每次调用会消耗一些额外的资源,上线权限晚上后,可以注释此处
-        //        me.add(new PermissionChecker());//权限检查
+        me.add(new PermissionChecker());//权限检查
     }
 
     /**
