@@ -64,7 +64,9 @@ public class PermissionChecker implements Interceptor {
         String requestUrl = me.getActionKey();
         if (!requestUrl.startsWith("/admin")) {
             me.invoke();//允许登录
+            return;
         }
+
         for (String url : NOT_NEED_CHECK_URLS) {
             if (url.equals(requestUrl)) {
                 me.invoke();
