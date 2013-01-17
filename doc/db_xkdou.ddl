@@ -34,3 +34,47 @@ CREATE TABLE IF NOT EXISTS `child_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='儿童信息';
 
 
+DROP TABLE IF EXISTS `xkd_auth_user`;
+CREATE TABLE IF NOT EXISTS `xkd_auth_user` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `username` varchar(20) NOT NULL COMMENT '用户名',
+  `password` varchar(50) NOT NULL COMMENT '密码',
+  `role_ids` varchar(10240) NOT NULL COMMENT '',
+  `last_login_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '最后登录时间',
+  `update_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
+  `add_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '添加的时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_xkd_auth_user_username` (`username`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;
+
+DROP TABLE IF EXISTS `xkd_auth_role`;
+CREATE TABLE IF NOT EXISTS `xkd_auth_role` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `name` varchar(20) NOT NULL COMMENT '角色名字',
+  `permissions_ids` varchar(10240) NOT NULL COMMENT '',
+  `update_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
+  `add_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '添加的时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;
+
+
+DROP TABLE IF EXISTS `xkd_auth_permission`;
+CREATE TABLE IF NOT EXISTS `xkd_auth_permission` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `name` varchar(50) NOT NULL COMMENT '权限名字',
+  `alias` varchar(50) NOT NULL COMMENT '权限别名',
+  `parent_id` int(10) unsigned NOT NULL COMMENT '父级权限',
+  `is_menu` tinyint(3) unsigned NOT NULL default '0' COMMENT '是否是菜单',
+  `permission` varchar(30) NOT NULL COMMENT '权限值',
+  `add_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '添加的时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_xkd_auth_permission_alias` (`alias`),
+  KEY `idx_xkd_auth_permission_parent_id` (`parent_id`),
+  UNIQUE `udx_xkd_auth_permission_alias_parent_id` (`alias`,`parent_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;
+
+
+
+
+
+

@@ -84,6 +84,8 @@ public class CoreConfig extends JFinalConfig {
      */
     @Override
     public void configInterceptor(Interceptors me) {
+        me.add(new PermissionBuild());//用于首次访问构建权限,此接口每次调用会消耗一些额外的资源,上线权限晚上后,可以注释此处
+        //        me.add(new PermissionChecker());//权限检查
     }
 
     /**

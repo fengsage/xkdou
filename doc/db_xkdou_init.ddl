@@ -1,0 +1,1 @@
+INSERT INTO `xkd_auth_user` VALUES (1,'admin','5R628KnYcvGgaDSFvyUxzQ==','','1970-01-01 00:00:00','2012-12-12 21:12:23','2012-11-14 18:32:42');
