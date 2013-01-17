@@ -78,20 +78,20 @@
 		       },
 		       {field:'is_show',title:'显示',width:50,align:'center',
 		        	formatter:function(value,row,index){
-		        		var a = '<img src="/easyui/themes/icons/ok.png"/>';
+						var a = '<img src="/img/ico_status_1.gif"/>';
 			        	if(value == 0)
 			        	{
-			        		a = '<img src="/easyui/themes/icons/no.png"/>';
+							a = '<img src="/img/ico_status_0.gif"/>';
 			        	}
 		        		return a;
 		        	}
 		        },
 		       {field:'is_finded',title:'回家',width:50,align:'center',
 		        	formatter:function(value,row,index){
-		        		var a = '<img src="/easyui/themes/icons/ok.png"/>';
+						var a = '<img src="/img/ico_status_1.gif"/>';
 			        	if(value == 0)
 			        	{
-			        		a = '<img src="/easyui/themes/icons/no.png"/>';
+							a = '<img src="/img/ico_status_0.gif"/>';
 			        	}
 		        		return a;
 		        	}

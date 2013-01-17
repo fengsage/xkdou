@@ -25,10 +25,10 @@ $(document).ready(function(){
 	        {field:'permission',title:'权限',width:200}, 
 	        {field:'isMenu',title:'菜单',width:50,align:'center',
 	        	formatter:function(value,row,index){
-	        		var a = '<img src="/images/ico_status_1.gif"/>';
+	        		var a = '<img src="/img/ico_status_1.gif"/>';
 		        	if(value == 0)
 		        	{
-		        		a = '<img src="/images/ico_status_0.gif"/>';
+		        		a = '<img src="/img/ico_status_0.gif"/>';
 		        	}
 	        		return a;
 	        	}

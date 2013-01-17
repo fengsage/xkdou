@@ -26,10 +26,10 @@ $(document).ready(function(){
 	        {field:'role_names',title:'角色',width:250},
 	        {field:'is_display',title:'显示',width:50,align:'center',
 	        	formatter:function(value,row,index){
-	        		var a = '<img src="/images/ico_status_1.gif"/>';
+	        		var a = '<img src="/img/ico_status_1.gif"/>';
 		        	if(value == 0)
 		        	{
-		        		a = '<img src="/images/ico_status_0.gif"/>';
+		        		a = '<img src="/img/ico_status_0.gif"/>';
 		        	}
 	        		return a;
 	        	}

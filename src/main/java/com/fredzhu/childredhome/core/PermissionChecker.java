@@ -50,7 +50,7 @@ public class PermissionChecker implements Interceptor {
 
     /**免权限URL*/
     private static final String[] NOT_NEED_CHECK_URLS = new String[] { "/admin/login",
-            "/admin/loginSubmit", "/admin/logout"    };
+            "/admin/loginSubmit", "/admin/logout", "/admin" };
 
     @SuppressWarnings("unchecked")
     public void intercept(ActionInvocation me) {

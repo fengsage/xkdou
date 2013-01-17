@@ -25,9 +25,10 @@
 	exit;
 	
 	4.运行
-	mvn jetty -P test
+	mvn jetty -P test  (test对应测试,prd对应线上,kuci是我在公司调试用的)
 	
 	5.浏览器输入
 	http://localhost:8080
+	帐号:admin  密码:admin
 
 需要修改的配置都在  pom.xml 里面
